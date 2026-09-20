@@ -10,7 +10,7 @@ import "./globals.css";
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
 });
 
@@ -23,7 +23,7 @@ const instrument = Instrument_Sans({
 const dancing = Dancing_Script({
   variable: "--font-dancing",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -35,6 +35,12 @@ export const metadata: Metadata = {
   title: "Dr. Niveen Salayi",
   description:
     "Cosmetics and Restorative Dentist — Dentistry, with a touch of personality.",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

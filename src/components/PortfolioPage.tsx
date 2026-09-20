@@ -2,71 +2,19 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import {
+  CertificateLightbox,
+  type CertificateLightboxImage,
+} from "./CertificateLightbox";
+import { MediaImage, MediaSlot, MediaVideo } from "./MediaSlot";
+import { SiteChrome, scrollToSection } from "./MobileNav";
 import { SectionLabel } from "./SectionLabel";
-
-function MenuIcon({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label="Open menu"
-      className="flex h-7 w-7 flex-col items-end justify-center gap-[3px]"
-    >
-      <span className="block h-px w-[18px] bg-white" />
-      <span className="block h-px w-3 bg-white" />
-    </button>
-  );
-}
-
-function MediaBackground({
-  src,
-  alt,
-  className = "",
-  priority = false,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-  priority?: boolean;
-}) {
-  return (
-    <Image
-      src={src}
-      alt={alt}
-      fill
-      priority={priority}
-      className={`object-cover ${className}`}
-      sizes="440px"
-    />
-  );
-}
-
-function VideoBackground({
-  src,
-  poster,
-  className = "",
-}: {
-  src: string;
-  poster: string;
-  className?: string;
-}) {
-  return (
-    <video
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="metadata"
-      poster={poster}
-      className={`absolute inset-0 h-full w-full object-cover ${className}`}
-    >
-      <source src={src} type="video/mp4" />
-    </video>
-  );
-}
+import { VideoPlaybackInit } from "./VideoPlaybackInit";
 
 export function PortfolioPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [certificateLightbox, setCertificateLightbox] =
+    useState<CertificateLightboxImage | null>(null);
 
   const navLinks = [
     { label: "Meet Niveen", href: "#about" },
@@ -78,94 +26,81 @@ export function PortfolioPage() {
   ];
 
   return (
-    <>
-      {menuOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-[#2f241f]/95 px-8 py-16 text-white backdrop-blur-sm">
-          <button
-            type="button"
-            onClick={() => setMenuOpen(false)}
-            aria-label="Close menu"
-            className="absolute right-6 top-8 text-2xl leading-none text-white/80"
-          >
-            ×
-          </button>
-          <nav className="mt-12 flex flex-col gap-6">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className="font-display text-3xl text-white"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-        </div>
-      )}
+    <div className="relative">
+      <VideoPlaybackInit />
+      <CertificateLightbox
+        image={certificateLightbox}
+        onClose={() => setCertificateLightbox(null)}
+      />
+      <SiteChrome
+        open={menuOpen}
+        onToggle={() => setMenuOpen((open) => !open)}
+        onClose={() => setMenuOpen(false)}
+        onHome={() => {
+          setMenuOpen(false);
+          scrollToSection("#home");
+        }}
+        onNavigate={(href) => {
+          setMenuOpen(false);
+          window.requestAnimationFrame(() => scrollToSection(href));
+        }}
+        links={navLinks}
+      />
 
-      <header className="sticky top-0 z-30 flex h-[66px] items-center justify-between bg-cream px-6">
-        <span className="font-logo text-[22px] text-[#2e1e1b]">niveen</span>
-        <button
-          type="button"
-          onClick={() => setMenuOpen(true)}
-          aria-label="Open menu"
-          className="flex flex-col items-end gap-[5px]"
-        >
-          <span className="block h-px w-[18px] bg-[#2e1e1b]" />
-          <span className="block h-px w-3 bg-[#2e1e1b]" />
-        </button>
-      </header>
-
-      <section className="relative min-h-[890px]">
-        <div className="absolute inset-0">
-          <VideoBackground
+      <section
+        id="home"
+        className="section-screen hero-screen pointer-events-none relative overflow-hidden"
+      >
+        <div className="absolute inset-0 size-full">
+          <MediaVideo
             src="/videos/hero-reel.mp4"
             poster="/images/hero-reel.jpg"
+            priority
+            fill
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10" />
         </div>
+        <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-t from-black/75 via-black/20 to-black/10" />
 
-        <div className="relative z-10 flex min-h-[890px] flex-col px-6 pb-12 pt-6">
-          <div className="flex items-start justify-between">
-            <MenuIcon onClick={() => setMenuOpen(true)} />
-          </div>
-
-          <div className="mt-auto space-y-3 pt-24">
-            <h1 className="font-display text-[38px] leading-[1.1] text-white">
+        <div className="hero-content relative z-10 flex h-full min-h-0 flex-col justify-end px-6">
+          <div className="space-y-3">
+            <h1 className="font-display text-[clamp(1.875rem,8svw,2.375rem)] leading-[1.1] text-white">
               Dr. Niveen Salayi
             </h1>
-            <p className="font-display text-base tracking-[0.04em] text-white/95">
+            <p className="font-body text-[clamp(0.8125rem,3.2svw,0.9375rem)] font-normal tracking-[0.08em] text-white/85">
               (BDS, GP) Cosmetics and Restorative Dentist
             </p>
-            <p className="font-display text-[21px] italic leading-snug text-white/90">
+            <p className="font-display text-[clamp(1rem,4.5svw,1.3125rem)] italic leading-snug text-white/90">
               &ldquo;Dentistry, with a touch of personality.&rdquo;
             </p>
           </div>
         </div>
       </section>
 
-      <section id="about" className="bg-cream pb-14 pt-14">
+      <section id="about" className="section-screen bg-cream px-0 py-4 md:py-8">
         <SectionLabel>01 / Meet Niveen</SectionLabel>
 
-        <div className="mt-8 grid h-[500px] grid-cols-2">
-          <div className="relative">
-            <MediaBackground src="/images/about-left.jpg" alt="Dr. Niveen portrait" />
-          </div>
-          <div className="relative">
-            <VideoBackground
+        <div className="about-media mt-4 grid min-h-0 w-full grid-cols-2 grid-rows-[minmax(0,1fr)] gap-0 px-0">
+          <MediaSlot className="h-full min-h-0 w-full">
+            <MediaImage
+              src="/images/about-left.jpg"
+              alt="Dr. Niveen portrait"
+              className="object-[22%_45%]"
+            />
+          </MediaSlot>
+          <MediaSlot className="h-full min-h-0 w-full">
+            <MediaVideo
               src="/videos/about-right.mp4"
               poster="/images/about-right.jpg"
             />
-          </div>
+          </MediaSlot>
         </div>
 
-        <div className="space-y-5 px-3 pt-8">
-          <h2 className="font-display text-[29px] font-semibold leading-tight text-text">
-            Dentistry, with a touch of personality.
+        <div className="section-copy shrink-0 space-y-3 px-3 pb-4 pt-4 md:space-y-5 md:pb-6 md:pt-6">
+          <h2 className="font-display text-[clamp(1.5rem,5svw,1.8125rem)] font-semibold leading-tight text-text">
+            Who says dentists are scary?
           </h2>
-          <p className="px-3 font-body text-[15px] leading-[1.65] text-text-body">
-            Who said dentists have to be scary? When I&apos;m not perfecting
+          <p className="px-3 font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.65] text-text-body">
+            When I&apos;m not perfecting
             smiles, you&apos;ll find me exploring new cities, hunting for the
             best coffee spots, and proving that your dentist can actually be
             someone you look forward to seeing and connect with.
@@ -173,79 +108,106 @@ export function PortfolioPage() {
         </div>
       </section>
 
-      <section id="achievements" className="bg-cream pb-14 pt-2">
+      <section id="achievements" className="section-screen bg-cream px-0 py-4 md:py-8">
         <SectionLabel>02 / Academic Achievements</SectionLabel>
 
-        <div className="relative mt-6 h-[506px]">
-          <MediaBackground
+        <MediaSlot className="achievements-media relative mt-4 h-full min-h-0 w-full">
+          <MediaImage
             src="/images/academic.jpg"
             alt="Dr. Niveen graduation"
           />
-          <div className="absolute left-0 top-[97px] w-[209px] px-0">
-            <div className="relative ml-0 aspect-[209/147] w-[209px] overflow-hidden shadow-lg">
-              <Image
+          <button
+            type="button"
+            className="absolute left-0 top-[19%] z-[3] w-[47.5%] max-w-[209px] cursor-pointer border-0 bg-transparent p-0 text-left transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            aria-label="View diploma certificate"
+            onClick={(event) => {
+              const rect = event.currentTarget.getBoundingClientRect();
+              setCertificateLightbox({
+                src: "/images/diploma.png",
+                alt: "Diploma certificate",
+                originRect: {
+                  top: rect.top,
+                  left: rect.left,
+                  width: rect.width,
+                  height: rect.height,
+                },
+              });
+            }}
+          >
+            <MediaSlot className="aspect-[209/147] w-full shadow-lg">
+              <MediaImage
                 src="/images/diploma.png"
                 alt="Diploma certificate"
-                fill
-                className="object-cover"
                 sizes="209px"
               />
-            </div>
-          </div>
-          <div className="absolute right-0 top-[97px] w-[200px] pr-0">
-            <div className="relative aspect-[200/147] w-[200px] overflow-hidden shadow-lg">
-              <Image
+            </MediaSlot>
+          </button>
+          <button
+            type="button"
+            className="absolute right-0 top-[19%] z-[3] w-[45.5%] max-w-[200px] cursor-pointer border-0 bg-transparent p-0 text-left transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            aria-label="View BDS certificate"
+            onClick={(event) => {
+              const rect = event.currentTarget.getBoundingClientRect();
+              setCertificateLightbox({
+                src: "/images/bds-certificate.png",
+                alt: "BDS certificate",
+                originRect: {
+                  top: rect.top,
+                  left: rect.left,
+                  width: rect.width,
+                  height: rect.height,
+                },
+              });
+            }}
+          >
+            <MediaSlot className="aspect-[200/147] w-full shadow-lg">
+              <MediaImage
                 src="/images/bds-certificate.png"
                 alt="BDS certificate"
-                fill
-                className="object-cover"
                 sizes="200px"
               />
-            </div>
-          </div>
-        </div>
+            </MediaSlot>
+          </button>
+        </MediaSlot>
 
-        <div className="space-y-5 px-5 pt-8">
-          <h2 className="font-display text-[29px] font-semibold leading-tight text-text-dark">
+        <div className="section-copy shrink-0 space-y-3 px-3 pb-4 pt-4 md:space-y-5 md:pb-6 md:pt-6">
+          <h2 className="font-display text-[clamp(1.5rem,5svw,1.8125rem)] font-semibold leading-tight text-text-dark">
             Memorable smiles start with trust.
           </h2>
-          <p className="font-body text-[15px] leading-[1.65] text-text-warm">
+          <p className="px-3 font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.65] text-text-warm">
             With 8 years of experience in cosmetic and restorative dentistry,
             and a BAIRD professional Diploma In Cosmetic and Restorative
             Dentistry. I blend clinical precision with an artist&apos;s eye.
           </p>
-          <p className="font-body text-[15px] leading-[1.65] text-text-warm">
-            Let&apos;s design a smile that feels uniquely yours.
-          </p>
         </div>
       </section>
 
-      <section id="cases" className="bg-cream px-6 pb-14 pt-14">
+      <section id="cases" className="section-screen bg-cream px-6 py-4 md:py-8">
         <SectionLabel className="px-0">03 case studies</SectionLabel>
 
-        <div className="mt-10 space-y-6">
-          <article>
-            <div className="relative h-[280px] overflow-hidden">
-              <MediaBackground
+        <div className="cases-body mt-4 min-h-0">
+          <article className="cases-article">
+            <MediaSlot className="case-media h-full min-h-0 w-full">
+              <MediaImage
                 src="/images/case-emax.jpg"
                 alt="Emax ceramic overlay case"
               />
-            </div>
-            <p className="mt-3 font-body text-[13px] leading-[1.55] text-text-body">
+            </MediaSlot>
+            <p className="mt-2 shrink-0 font-body text-[clamp(0.6875rem,3svw,0.8125rem)] leading-[1.55] text-text-body md:mt-3">
               Amalgam dental cavity replacement with Emax ceramic overlay -
               preserving tooth structure while restoring a naturally seamless
               finish.
             </p>
           </article>
 
-          <article>
-            <div className="relative h-[280px] overflow-hidden">
-              <MediaBackground
+          <article className="cases-article">
+            <MediaSlot className="case-media h-full min-h-0 w-full">
+              <MediaImage
                 src="/images/case-bleaching.jpg"
                 alt="Professional bleaching case"
               />
-            </div>
-            <p className="mt-3 font-body text-[13px] leading-[1.55] text-text-body">
+            </MediaSlot>
+            <p className="mt-2 shrink-0 font-body text-[clamp(0.6875rem,3svw,0.8125rem)] leading-[1.55] text-text-body md:mt-3">
               Professional bleaching treatment to remove deep cigarette stains -
               revealing a brighter, cleaner smile hidden underneath years of
               discolouration.
@@ -254,25 +216,21 @@ export function PortfolioPage() {
         </div>
       </section>
 
-      <section id="restor" className="bg-cream pb-14 pt-2">
+      <section id="restor" className="section-screen bg-cream px-0 py-4 md:py-8">
         <SectionLabel>05 / Restor</SectionLabel>
 
-        <div className="relative mt-6 h-[500px]">
-          <VideoBackground
-            src="/videos/vision.mp4"
-            poster="/images/vision.jpg"
-          />
-        </div>
+        <MediaSlot className="restor-media mt-4 h-full min-h-0 w-full">
+          <MediaVideo src="/videos/vision.mp4" poster="/images/vision.jpg" />
+        </MediaSlot>
 
-        <div className="space-y-4 px-6 pt-8">
-          <h2 className="font-display text-[29px] font-semibold leading-tight text-text">
+        <div className="section-copy shrink-0 space-y-3 px-6 pb-4 pt-4 md:space-y-4 md:pb-6 md:pt-6">
+          <h2 className="font-display text-[clamp(1.5rem,5svw,1.8125rem)] font-semibold leading-tight text-text">
             From vision to reality.
           </h2>
-          <p className="font-body text-[15px] leading-[1.65] text-text-body">
-            Co-founder of Restor Dental Clinic — where artistry meets precision,
-            and every smile tells a story.
+          <p className="font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.65] text-text-body">
+            Co-founder of Restor Dental Clinic
           </p>
-          <p className="font-body text-[15px] leading-[1.65] text-text-body">
+          <p className="font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.65] text-text-body">
             Building a dental clinic from the ground up was never easy — but
             every detail of Restor was shaped by a dream to create something
             truly aesthetically unique..
@@ -280,47 +238,43 @@ export function PortfolioPage() {
         </div>
       </section>
 
-      <section id="find-me" className="bg-cream pb-14 pt-2">
+      <section id="find-me" className="section-screen bg-cream py-2">
         <SectionLabel>06 / Where to Find Me</SectionLabel>
 
-        <div className="relative mx-5 mt-6 aspect-[400/603] overflow-hidden">
-          <VideoBackground
-            src="/videos/find-me.mp4"
-            poster="/images/find-me.jpg"
-          />
-        </div>
+        <MediaSlot className="section-media mx-5 mt-4 min-h-0">
+          <MediaVideo src="/videos/find-me.mp4" poster="/images/find-me.jpg" />
+        </MediaSlot>
 
-        <div className="relative mx-9 -mt-16 mb-4 h-[214px] overflow-hidden shadow-md">
-          <Image
+        <MediaSlot className="relative mx-9 -mt-8 mb-2 h-[min(214px,22svh)] shrink-0 shadow-md md:-mt-10 md:mb-4 md:h-[214px]">
+          <MediaImage
             src="/images/map.png"
             alt="Clinic location map"
-            fill
-            className="object-cover"
             sizes="367px"
           />
-        </div>
+        </MediaSlot>
 
-        <p className="px-8 text-center font-body text-[15px] leading-[1.55] text-text">
+        <p className="section-copy shrink-0 px-8 pb-4 text-center font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.55] text-text md:pb-6">
           Erbil — Bakhtyari — Opposite of Zaga Mall
           <br />— Restor Dental Clinic
         </p>
       </section>
 
-      <section id="contact" className="relative min-h-[877px]">
-        <div className="absolute inset-0">
-          <VideoBackground
+      <section id="contact" className="section-screen relative overflow-hidden">
+        <div className="absolute inset-0 size-full">
+          <MediaVideo
             src="/videos/booking.mp4"
             poster="/images/booking.jpg"
+            fill
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
         </div>
+        <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
 
-        <div className="relative z-10 px-6 pt-14">
+        <div className="relative z-10 shrink-0 px-6 pt-10 md:pt-14">
           <div className="h-px w-full bg-white/25" />
         </div>
 
-        <div className="relative z-10 flex min-h-[700px] flex-col justify-end px-6 pb-16 pt-32 text-center text-white">
-          <h2 className="font-display text-[38px] leading-tight">
+        <div className="hero-content relative z-10 flex min-h-0 flex-1 flex-col justify-end overflow-hidden px-6 text-center text-white">
+          <h2 className="font-display text-[clamp(2rem,8svw,2.375rem)] leading-tight">
             I&apos;ll be expecting you
           </h2>
           <div className="mx-auto mt-8 max-w-[360px] space-y-3 font-body text-[15px] leading-[1.7] text-white/95">
@@ -364,7 +318,9 @@ export function PortfolioPage() {
       </section>
 
       <footer className="flex min-h-[82px] items-center justify-between gap-3 bg-cream px-6 py-5">
-        <span className="font-logo text-2xl text-[#2e1e1b]">niveen</span>
+        <span className="font-logo text-[26px] font-semibold leading-none tracking-[0.02em] text-[#2e1e1b]">
+          niveen
+        </span>
         <p className="max-w-[157px] text-center font-body text-[11px] leading-[1.45] text-text-body">
           © 2026 Dr. Niveen Salayi
           <br />
@@ -378,11 +334,12 @@ export function PortfolioPage() {
               alt="Nordlys"
               width={20}
               height={21}
+              style={{ width: "auto", height: "auto" }}
             />
             <span className="font-body text-[13px] text-text-dark">Nordlys</span>
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
