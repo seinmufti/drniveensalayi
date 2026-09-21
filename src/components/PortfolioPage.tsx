@@ -271,7 +271,7 @@ export function PortfolioPage() {
           </div>
 
           <div className="find-me-location px-9 pb-4 md:pb-6">
-            <ClinicMap className="h-[min(150px,17svh)] rounded-xl shadow-md md:h-[160px]" />
+            <ClinicMap className="h-[min(150px,19svh)] rounded-xl shadow-md md:h-[160px]" />
             <p className="px-2 pt-2 text-center font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.55] text-text">
               Erbil — Bakhtyari — Opposite of Zaga Mall
               <br />— Restor Dental Clinic
@@ -291,81 +291,75 @@ export function PortfolioPage() {
         </div>
         <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
 
-        <div className="contact-layout relative z-10 flex min-h-0 flex-1 flex-col">
-          <div className="shrink-0 px-6 pt-10 md:pt-14">
-            <div className="h-px w-full bg-white/25" />
+        <div className="contact-layout relative z-10 min-h-0 flex-1">
+          <div className="contact-content px-6 text-center text-white">
+            <h2 className="font-display text-[clamp(2rem,8svw,2.375rem)] leading-tight">
+              I&apos;ll be expecting you
+            </h2>
+            <div className="mx-auto mt-8 max-w-[360px] space-y-3 font-body text-[15px] leading-[1.7] text-white/95">
+              <p>
+                <a
+                  href="https://wa.me/9647510514001"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-white/30 underline-offset-4"
+                >
+                  WhatsApp: +964 751 051 4001
+                </a>
+              </p>
+              <p>
+                <a
+                  href="https://instagram.com/dr.niveen_salayi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-white/30 underline-offset-4"
+                >
+                  Instagram: dr.niveen_salayi
+                </a>
+              </p>
+              <p>
+                <a
+                  href="https://instagram.com/restor.dental"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-white/30 underline-offset-4"
+                >
+                  Clinic Instagram: restor.dental
+                </a>
+              </p>
+              <p className="pt-2">
+                Address:
+                <br />
+                Erbil — Bakhtyari — Opposite of Zaga Mall
+              </p>
+            </div>
           </div>
 
-          <div className="min-h-0 flex-1" />
-
-          <div className="contact-content shrink-0 px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] text-center text-white md:pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
-          <h2 className="font-display text-[clamp(2rem,8svw,2.375rem)] leading-tight">
-            I&apos;ll be expecting you
-          </h2>
-          <div className="mx-auto mt-8 max-w-[360px] space-y-3 font-body text-[15px] leading-[1.7] text-white/95">
-            <p>
-              <a
-                href="https://wa.me/9647510514001"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-white/30 underline-offset-4"
-              >
-                WhatsApp: +964 751 051 4001
-              </a>
-            </p>
-            <p>
-              <a
-                href="https://instagram.com/dr.niveen_salayi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-white/30 underline-offset-4"
-              >
-                Instagram: dr.niveen_salayi
-              </a>
-            </p>
-            <p>
-              <a
-                href="https://instagram.com/restor.dental"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-white/30 underline-offset-4"
-              >
-                Clinic Instagram: restor.dental
-              </a>
-            </p>
-            <p className="pt-2">
-              Address:
+          <footer className="contact-footer flex items-center justify-between gap-3 bg-cream">
+            <span className="font-logo text-[26px] font-semibold leading-none tracking-[0.02em] text-[#2e1e1b]">
+              niveen
+            </span>
+            <p className="max-w-[157px] text-center font-body text-[11px] leading-[1.45] text-text-body">
+              © 2026 Dr. Niveen Salayi
               <br />
-              Erbil — Bakhtyari — Opposite of Zaga Mall
+              All rights reserved
             </p>
-          </div>
-          </div>
+            <div className="text-right">
+              <p className="font-body text-[11px] text-text-body">Developed by</p>
+              <div className="mt-1 flex items-center justify-end gap-1.5">
+                <Image
+                  src="/images/nordlys-logo.png"
+                  alt="Nordlys"
+                  width={20}
+                  height={21}
+                  style={{ width: "auto", height: "auto" }}
+                />
+                <span className="font-body text-[13px] text-text-dark">Nordlys</span>
+              </div>
+            </div>
+          </footer>
         </div>
       </section>
-
-      <footer className="flex min-h-[82px] items-center justify-between gap-3 bg-cream px-6 py-5">
-        <span className="font-logo text-[26px] font-semibold leading-none tracking-[0.02em] text-[#2e1e1b]">
-          niveen
-        </span>
-        <p className="max-w-[157px] text-center font-body text-[11px] leading-[1.45] text-text-body">
-          © 2026 Dr. Niveen Salayi
-          <br />
-          All rights reserved
-        </p>
-        <div className="text-right">
-          <p className="font-body text-[11px] text-text-body">Developed by</p>
-          <div className="mt-1 flex items-center justify-end gap-1.5">
-            <Image
-              src="/images/nordlys-logo.png"
-              alt="Nordlys"
-              width={20}
-              height={21}
-              style={{ width: "auto", height: "auto" }}
-            />
-            <span className="font-body text-[13px] text-text-dark">Nordlys</span>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

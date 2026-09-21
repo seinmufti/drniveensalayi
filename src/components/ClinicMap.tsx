@@ -6,10 +6,10 @@ const CLINIC_COORDS = `${CLINIC_LAT},${CLINIC_LNG}`;
 
 function getMapEmbedSrc(apiKey?: string) {
   if (apiKey) {
-    return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${CLINIC_COORDS}&zoom=16`;
+    return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${CLINIC_COORDS}&zoom=14`;
   }
 
-  return `https://www.google.com/maps?q=${CLINIC_COORDS}&hl=en&z=16&output=embed`;
+  return `https://www.google.com/maps?q=${CLINIC_COORDS}&hl=en&z=14&output=embed`;
 }
 
 type ClinicMapProps = {

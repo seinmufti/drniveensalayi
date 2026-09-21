@@ -287,14 +287,31 @@ body {
 }
 
 #contact.section-screen {
+  display: flex;
+  flex-direction: column;
   height: var(--screen-h);
   min-height: var(--screen-h);
   max-height: var(--screen-h);
 }
 
 #contact .contact-layout {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
   flex: 1 1 auto;
   min-height: 0;
+}
+
+#contact .contact-content {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding-bottom: 1rem;
+}
+
+#contact .contact-footer {
+  padding: 1.25rem 1.5rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
 }
 
 #find-me.section-screen {
@@ -338,7 +355,7 @@ body {
 #find-me .find-me-location {
   position: relative;
   z-index: 10;
-  margin-top: -2svh;
+  margin-top: -7svh;
   padding-top: 0;
 }
 
