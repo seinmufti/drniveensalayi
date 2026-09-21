@@ -6,6 +6,7 @@ import {
   CertificateLightbox,
   type CertificateLightboxImage,
 } from "./CertificateLightbox";
+import { ClinicMap } from "./ClinicMap";
 import { MediaImage, MediaSlot, MediaVideo } from "./MediaSlot";
 import { SiteChrome, scrollToSection } from "./MobileNav";
 import { SectionLabel } from "./SectionLabel";
@@ -236,7 +237,7 @@ export function PortfolioPage() {
           />
           <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-          <div className="section-copy absolute inset-x-0 bottom-0 z-[3] bg-black/55 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] pt-4 backdrop-blur-[40px] md:pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] md:pt-6">
+          <div className="section-copy restor-copy absolute inset-x-0 bottom-0 z-[3] bg-black/35 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] backdrop-blur-[40px] md:pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]">
             <div className="space-y-3 px-6 md:space-y-4">
               <h2 className="font-display text-[clamp(1.5rem,5svw,1.8125rem)] font-semibold leading-tight text-white">
                 From vision to reality.
@@ -254,25 +255,29 @@ export function PortfolioPage() {
         </div>
       </section>
 
-      <section id="find-me" className="section-screen bg-cream py-2">
+      <section id="find-me" className="section-screen bg-cream px-0 pt-4 pb-0 md:pt-8">
         <SectionLabel>06 / Where to Find Me</SectionLabel>
 
-        <MediaSlot className="section-media mx-5 min-h-0 flex-1">
-          <MediaVideo src="/videos/find-me.mp4" poster="/images/find-me.jpg" />
-        </MediaSlot>
+        <div className="find-me-media min-h-0 w-full flex-1">
+          <div className="find-me-video relative min-h-0">
+            <div className="find-me-video-frame relative h-full max-w-full">
+              <MediaVideo
+                src="/videos/find-me.mp4"
+                poster="/images/find-me.jpg"
+                fill
+                className="!object-cover"
+              />
+            </div>
+          </div>
 
-        <MediaSlot className="relative mx-9 -mt-8 mb-2 h-[min(214px,22svh)] shrink-0 shadow-md md:-mt-10 md:mb-4 md:h-[214px]">
-          <MediaImage
-            src="/images/map.png"
-            alt="Clinic location map"
-            sizes="367px"
-          />
-        </MediaSlot>
-
-        <p className="section-copy shrink-0 px-8 pb-4 text-center font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.55] text-text md:pb-6">
-          Erbil — Bakhtyari — Opposite of Zaga Mall
-          <br />— Restor Dental Clinic
-        </p>
+          <div className="find-me-location px-9 pb-4 md:pb-6">
+            <ClinicMap className="h-[min(150px,17svh)] rounded-xl shadow-md md:h-[160px]" />
+            <p className="px-2 pt-2 text-center font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.55] text-text">
+              Erbil — Bakhtyari — Opposite of Zaga Mall
+              <br />— Restor Dental Clinic
+            </p>
+          </div>
+        </div>
       </section>
 
       <section id="contact" className="section-screen relative overflow-hidden">
@@ -286,11 +291,14 @@ export function PortfolioPage() {
         </div>
         <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
 
-        <div className="relative z-10 shrink-0 px-6 pt-10 md:pt-14">
-          <div className="h-px w-full bg-white/25" />
-        </div>
+        <div className="contact-layout relative z-10 flex min-h-0 flex-1 flex-col">
+          <div className="shrink-0 px-6 pt-10 md:pt-14">
+            <div className="h-px w-full bg-white/25" />
+          </div>
 
-        <div className="hero-content relative z-10 flex min-h-0 flex-1 flex-col justify-end overflow-hidden px-6 text-center text-white">
+          <div className="min-h-0 flex-1" />
+
+          <div className="contact-content shrink-0 px-6 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] text-center text-white md:pb-[calc(2rem+env(safe-area-inset-bottom,0px))]">
           <h2 className="font-display text-[clamp(2rem,8svw,2.375rem)] leading-tight">
             I&apos;ll be expecting you
           </h2>
@@ -330,6 +338,7 @@ export function PortfolioPage() {
               <br />
               Erbil — Bakhtyari — Opposite of Zaga Mall
             </p>
+          </div>
           </div>
         </div>
       </section>

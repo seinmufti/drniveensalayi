@@ -77,6 +77,18 @@ function setupVideo(video: HTMLVideoElement, { loop = true }: { loop?: boolean }
   video.setAttribute("webkit-playsinline", "true");
 }
 
+function supportsReversePlayback(video: HTMLVideoElement) {
+  try {
+    const previous = video.playbackRate;
+    video.playbackRate = -1;
+    const supported = video.playbackRate < 0;
+    video.playbackRate = previous;
+    return supported;
+  } catch {
+    return false;
+  }
+}
+
 export function MediaVideo({
   src,
   poster,
@@ -94,6 +106,7 @@ export function MediaVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const directionRef = useRef<"forward" | "reverse">("forward");
+  const reverseRafRef = useRef<number | null>(null);
   const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
@@ -110,16 +123,56 @@ export function MediaVideo({
 
     const hideSkeleton = () => setShowSkeleton(false);
 
-    const play = () => {
-      setupVideo(video, { loop: !pingPong });
-      video.playbackRate = directionRef.current === "reverse" ? -1 : 1;
+    const stopManualReverse = () => {
+      if (reverseRafRef.current !== null) {
+        cancelAnimationFrame(reverseRafRef.current);
+        reverseRafRef.current = null;
+      }
+    };
+
+    const playForward = () => {
+      stopManualReverse();
+      directionRef.current = "forward";
+      video.playbackRate = 1;
       void video.play().catch(() => {});
     };
 
     const playReverse = () => {
+      if (supportsReversePlayback(video)) {
+        stopManualReverse();
+        directionRef.current = "reverse";
+        video.playbackRate = -1;
+        video.currentTime = Math.max(0, video.duration - 0.05);
+        void video.play().catch(() => {});
+        return;
+      }
+
       directionRef.current = "reverse";
-      video.playbackRate = -1;
-      video.currentTime = Math.max(0, video.duration - 0.05);
+      video.pause();
+      video.playbackRate = 1;
+
+      const step = () => {
+        if (video.currentTime <= 0.05) {
+          playForward();
+          return;
+        }
+
+        video.currentTime = Math.max(0, video.currentTime - 0.04);
+        reverseRafRef.current = requestAnimationFrame(step);
+      };
+
+      reverseRafRef.current = requestAnimationFrame(step);
+    };
+
+    const play = () => {
+      setupVideo(video, { loop: !pingPong });
+      if (directionRef.current === "reverse") {
+        playReverse();
+        return;
+      }
+
+      stopManualReverse();
+      video.playbackRate = 1;
       void video.play().catch(() => {});
     };
 
@@ -130,11 +183,9 @@ export function MediaVideo({
 
     const handleTimeUpdate = () => {
       if (!pingPong || directionRef.current !== "reverse") return;
+      if (!supportsReversePlayback(video)) return;
       if (video.currentTime <= 0.05) {
-        directionRef.current = "forward";
-        video.playbackRate = 1;
-        video.currentTime = 0;
-        void video.play().catch(() => {});
+        playForward();
       }
     };
 
@@ -165,6 +216,7 @@ export function MediaVideo({
     document.addEventListener("click", unlock);
 
     return () => {
+      stopManualReverse();
       video.removeEventListener("loadeddata", hideSkeleton);
       video.removeEventListener("playing", hideSkeleton);
       video.removeEventListener("canplay", play);
