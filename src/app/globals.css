@@ -261,6 +261,7 @@ body {
   min-height: calc(var(--screen-h) - var(--header-h));
   max-height: calc(var(--screen-h) - var(--header-h));
   overflow: hidden;
+  padding-bottom: 0;
 }
 
 #restor .restor-media {

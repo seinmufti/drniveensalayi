@@ -224,7 +224,7 @@ export function PortfolioPage() {
         </div>
       </section>
 
-      <section id="restor" className="section-screen bg-cream px-0 py-4 md:py-8">
+      <section id="restor" className="section-screen bg-cream px-0 pt-4 pb-0 md:pt-8">
         <SectionLabel>05 / Restor</SectionLabel>
 
         <div className="restor-media relative min-h-0 w-full flex-1 overflow-hidden">
@@ -236,18 +236,20 @@ export function PortfolioPage() {
           />
           <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-          <div className="section-copy absolute inset-x-0 bottom-0 z-[3] space-y-3 bg-black/55 px-6 pb-4 pt-4 backdrop-blur-[40px] md:space-y-4 md:pb-6 md:pt-6">
-            <h2 className="font-display text-[clamp(1.5rem,5svw,1.8125rem)] font-semibold leading-tight text-white">
-              From vision to reality.
-            </h2>
-            <p className="font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.65] text-white/90">
-              Co-founder of Restor Dental Clinic
-            </p>
-            <p className="font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.65] text-white/90">
-              Building a dental clinic from the ground up was never easy — but
-              every detail of Restor was shaped by a dream to create something
-              truly aesthetically unique..
-            </p>
+          <div className="section-copy absolute inset-x-0 bottom-0 z-[3] bg-black/55 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] pt-4 backdrop-blur-[40px] md:pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] md:pt-6">
+            <div className="space-y-3 px-6 md:space-y-4">
+              <h2 className="font-display text-[clamp(1.5rem,5svw,1.8125rem)] font-semibold leading-tight text-white">
+                From vision to reality.
+              </h2>
+              <p className="font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.65] text-white/90">
+                Co-founder of Restor Dental Clinic
+              </p>
+              <p className="font-body text-[clamp(0.8125rem,3.6svw,0.9375rem)] leading-[1.65] text-white/90">
+                Building a dental clinic from the ground up was never easy — but
+                every detail of Restor was shaped by a dream to create something
+                truly aesthetically unique..
+              </p>
+            </div>
           </div>
         </div>
       </section>
