@@ -1,0 +1,12 @@
+---
+description: drniveen reserved port — Port Assign Initiative
+alwaysApply: true
+---
+
+# Port Assign Initiative
+
+This app is bound to **port 4717** only. See `~/.cursor/PORT-ASSIGN-INITIATIVE.md` for the global policy.
+
+- Run with `npm run dev` or `npm run start` — both use port **4717**.
+- Never start this app on another port.
+- Never start any other app on port **4717**.

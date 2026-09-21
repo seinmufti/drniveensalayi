@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -H 0.0.0.0 -p 4717",
+    "dev": "node scripts/dev.mjs",
+    "dev:allow-network": "powershell -ExecutionPolicy Bypass -File scripts/allow-port-4717.ps1",
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p 4717",
     "lint": "eslint"

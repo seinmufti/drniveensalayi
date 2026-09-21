@@ -79,7 +79,7 @@ export function PortfolioPage() {
       <section id="about" className="section-screen bg-cream px-0 py-4 md:py-8">
         <SectionLabel>01 / Meet Niveen</SectionLabel>
 
-        <div className="about-media mt-4 grid min-h-0 w-full grid-cols-2 grid-rows-[minmax(0,1fr)] gap-0 px-0">
+        <div className="about-media grid min-h-0 w-full flex-1 grid-cols-2 grid-rows-[minmax(0,1fr)] gap-0 px-0">
           <MediaSlot className="h-full min-h-0 w-full">
             <MediaImage
               src="/images/about-left.jpg"
@@ -111,7 +111,7 @@ export function PortfolioPage() {
       <section id="achievements" className="section-screen bg-cream px-0 py-4 md:py-8">
         <SectionLabel>02 / Academic Achievements</SectionLabel>
 
-        <MediaSlot className="achievements-media relative mt-4 h-full min-h-0 w-full">
+        <MediaSlot className="achievements-media relative min-h-0 w-full flex-1">
           <MediaImage
             src="/images/academic.jpg"
             alt="Dr. Niveen graduation"
@@ -182,18 +182,22 @@ export function PortfolioPage() {
         </div>
       </section>
 
-      <section id="cases" className="section-screen bg-cream px-6 py-4 md:py-8">
-        <SectionLabel className="px-0">03 case studies</SectionLabel>
+      <section id="cases" className="section-screen bg-cream px-0 py-4 md:py-8">
+        <SectionLabel>03 case studies</SectionLabel>
 
-        <div className="cases-body mt-4 min-h-0">
+        <div className="cases-body min-h-0 flex-1">
           <article className="cases-article">
-            <MediaSlot className="case-media h-full min-h-0 w-full">
-              <MediaImage
-                src="/images/case-emax.jpg"
-                alt="Emax ceramic overlay case"
-              />
-            </MediaSlot>
-            <p className="mt-2 shrink-0 font-body text-[clamp(0.6875rem,3svw,0.8125rem)] leading-[1.55] text-text-body md:mt-3">
+            <div className="case-media-row">
+              <div className="case-media-gutter" aria-hidden="true" />
+              <MediaSlot className="case-media h-full min-h-0 w-full">
+                <MediaImage
+                  src="/images/case-emax.jpg"
+                  alt="Emax ceramic overlay case"
+                />
+              </MediaSlot>
+              <div className="case-media-gutter" aria-hidden="true" />
+            </div>
+            <p className="mt-2 shrink-0 px-6 font-body text-[clamp(0.6875rem,3svw,0.8125rem)] leading-[1.55] text-text-body md:mt-3">
               Amalgam dental cavity replacement with Emax ceramic overlay -
               preserving tooth structure while restoring a naturally seamless
               finish.
@@ -201,13 +205,17 @@ export function PortfolioPage() {
           </article>
 
           <article className="cases-article">
-            <MediaSlot className="case-media h-full min-h-0 w-full">
-              <MediaImage
-                src="/images/case-bleaching.jpg"
-                alt="Professional bleaching case"
-              />
-            </MediaSlot>
-            <p className="mt-2 shrink-0 font-body text-[clamp(0.6875rem,3svw,0.8125rem)] leading-[1.55] text-text-body md:mt-3">
+            <div className="case-media-row">
+              <div className="case-media-gutter" aria-hidden="true" />
+              <MediaSlot className="case-media h-full min-h-0 w-full">
+                <MediaImage
+                  src="/images/case-bleaching.jpg"
+                  alt="Professional bleaching case"
+                />
+              </MediaSlot>
+              <div className="case-media-gutter" aria-hidden="true" />
+            </div>
+            <p className="mt-2 shrink-0 px-6 font-body text-[clamp(0.6875rem,3svw,0.8125rem)] leading-[1.55] text-text-body md:mt-3">
               Professional bleaching treatment to remove deep cigarette stains -
               revealing a brighter, cleaner smile hidden underneath years of
               discolouration.
@@ -219,7 +227,7 @@ export function PortfolioPage() {
       <section id="restor" className="section-screen bg-cream px-0 py-4 md:py-8">
         <SectionLabel>05 / Restor</SectionLabel>
 
-        <MediaSlot className="restor-media mt-4 h-full min-h-0 w-full">
+        <MediaSlot className="restor-media min-h-0 w-full flex-1">
           <MediaVideo src="/videos/vision.mp4" poster="/images/vision.jpg" />
         </MediaSlot>
 
@@ -241,7 +249,7 @@ export function PortfolioPage() {
       <section id="find-me" className="section-screen bg-cream py-2">
         <SectionLabel>06 / Where to Find Me</SectionLabel>
 
-        <MediaSlot className="section-media mx-5 mt-4 min-h-0">
+        <MediaSlot className="section-media mx-5 min-h-0 flex-1">
           <MediaVideo src="/videos/find-me.mp4" poster="/images/find-me.jpg" />
         </MediaSlot>
 
@@ -265,6 +273,7 @@ export function PortfolioPage() {
             src="/videos/booking.mp4"
             poster="/images/booking.jpg"
             fill
+            pingPong
           />
         </div>
         <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-t from-black/80 via-black/45 to-black/25" />

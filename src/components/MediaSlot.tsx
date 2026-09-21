@@ -67,11 +67,11 @@ export function MediaImage({
   );
 }
 
-function setupVideo(video: HTMLVideoElement) {
+function setupVideo(video: HTMLVideoElement, { loop = true }: { loop?: boolean } = {}) {
   video.muted = true;
   video.defaultMuted = true;
   video.playsInline = true;
-  video.loop = true;
+  video.loop = loop;
   video.setAttribute("muted", "");
   video.setAttribute("playsinline", "");
   video.setAttribute("webkit-playsinline", "true");
@@ -83,14 +83,17 @@ export function MediaVideo({
   className = "",
   priority = false,
   fill = false,
+  pingPong = false,
 }: {
   src: string;
   poster: string;
   className?: string;
   priority?: boolean;
   fill?: boolean;
+  pingPong?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const directionRef = useRef<"forward" | "reverse">("forward");
   const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
@@ -102,18 +105,46 @@ export function MediaVideo({
       return () => window.clearTimeout(t);
     }
 
-    setupVideo(video);
+    directionRef.current = "forward";
+    setupVideo(video, { loop: !pingPong });
 
     const hideSkeleton = () => setShowSkeleton(false);
 
     const play = () => {
-      setupVideo(video);
+      setupVideo(video, { loop: !pingPong });
+      video.playbackRate = directionRef.current === "reverse" ? -1 : 1;
       void video.play().catch(() => {});
+    };
+
+    const playReverse = () => {
+      directionRef.current = "reverse";
+      video.playbackRate = -1;
+      video.currentTime = Math.max(0, video.duration - 0.05);
+      void video.play().catch(() => {});
+    };
+
+    const handleEnded = () => {
+      if (!pingPong) return;
+      playReverse();
+    };
+
+    const handleTimeUpdate = () => {
+      if (!pingPong || directionRef.current !== "reverse") return;
+      if (video.currentTime <= 0.05) {
+        directionRef.current = "forward";
+        video.playbackRate = 1;
+        video.currentTime = 0;
+        void video.play().catch(() => {});
+      }
     };
 
     video.addEventListener("loadeddata", hideSkeleton);
     video.addEventListener("playing", hideSkeleton);
     video.addEventListener("canplay", play);
+    if (pingPong) {
+      video.addEventListener("ended", handleEnded);
+      video.addEventListener("timeupdate", handleTimeUpdate);
+    }
 
     play();
 
@@ -137,12 +168,16 @@ export function MediaVideo({
       video.removeEventListener("loadeddata", hideSkeleton);
       video.removeEventListener("playing", hideSkeleton);
       video.removeEventListener("canplay", play);
+      if (pingPong) {
+        video.removeEventListener("ended", handleEnded);
+        video.removeEventListener("timeupdate", handleTimeUpdate);
+      }
       observer.disconnect();
       document.removeEventListener("touchstart", unlock);
       document.removeEventListener("click", unlock);
       window.clearTimeout(fallback);
     };
-  }, [src]);
+  }, [src, pingPong]);
 
   const wrapperClass = fill
     ? "pointer-events-none relative size-full"
@@ -158,7 +193,7 @@ export function MediaVideo({
         ref={videoRef}
         src={src}
         autoPlay
-        loop
+        loop={!pingPong}
         muted
         playsInline
         preload={priority ? "auto" : "metadata"}
