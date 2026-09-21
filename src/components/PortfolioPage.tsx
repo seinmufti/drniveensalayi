@@ -288,6 +288,7 @@ export function PortfolioPage() {
                 fill
                 pingPong
                 priority
+                className="object-[50%_28%]"
               />
             </div>
             <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
@@ -326,11 +327,6 @@ export function PortfolioPage() {
                 >
                   Clinic Instagram: restor.dental
                 </a>
-              </p>
-              <p className="pt-2">
-                Address:
-                <br />
-                Erbil — Bakhtyari — Opposite of Zaga Mall
               </p>
             </div>
             </div>

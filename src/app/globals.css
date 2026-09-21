@@ -324,9 +324,12 @@ body {
 #contact .contact-content-inner {
   min-height: 0;
   flex: 1 1 auto;
+  padding-bottom: 3svh;
 }
 
 #contact .contact-footer {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
   align-items: center;
