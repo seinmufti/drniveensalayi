@@ -79,11 +79,20 @@ function setupVideo(video: HTMLVideoElement, { loop = true }: { loop?: boolean }
 
 function supportsReversePlayback(video: HTMLVideoElement) {
   try {
-    const previous = video.playbackRate;
+    const previousRate = video.playbackRate;
     video.playbackRate = -1;
     const supported = video.playbackRate < 0;
-    video.playbackRate = previous;
+    video.playbackRate = previousRate;
     return supported;
+  } catch {
+    return false;
+  }
+}
+
+function setPlaybackRate(video: HTMLVideoElement, rate: number) {
+  try {
+    video.playbackRate = rate;
+    return video.playbackRate === rate;
   } catch {
     return false;
   }
@@ -106,8 +115,7 @@ export function MediaVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const directionRef = useRef<"forward" | "reverse">("forward");
-  const reverseRafRef = useRef<number | null>(null);
-  const reverseSupportedRef = useRef(false);
+  const pingPongActiveRef = useRef(false);
   const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
@@ -120,94 +128,55 @@ export function MediaVideo({
     }
 
     directionRef.current = "forward";
-    reverseSupportedRef.current = supportsReversePlayback(video);
-    setupVideo(video, { loop: !pingPong });
+    pingPongActiveRef.current = pingPong && supportsReversePlayback(video);
+    setupVideo(video, { loop: pingPong ? !pingPongActiveRef.current : true });
 
     const hideSkeleton = () => setShowSkeleton(false);
 
-    const stopManualReverse = () => {
-      if (reverseRafRef.current !== null) {
-        cancelAnimationFrame(reverseRafRef.current);
-        reverseRafRef.current = null;
-      }
-    };
-
-    const seekTo = (time: number) => {
-      const nextTime = Math.max(0, time);
-      if (typeof video.fastSeek === "function") {
-        video.fastSeek(nextTime);
-        return;
-      }
-      video.currentTime = nextTime;
-    };
-
     const playForward = () => {
-      stopManualReverse();
       directionRef.current = "forward";
-      video.playbackRate = 1;
+      setPlaybackRate(video, 1);
       if (video.currentTime <= 0.01) {
-        seekTo(0);
+        video.currentTime = 0;
       }
       void video.play().catch(() => {});
     };
 
     const playReverse = () => {
-      if (reverseSupportedRef.current) {
-        stopManualReverse();
-        directionRef.current = "reverse";
-        video.playbackRate = -1;
-        if (video.currentTime >= video.duration - 0.05) {
-          seekTo(Math.max(0, video.duration - 0.05));
-        }
-        void video.play().catch(() => {});
+      directionRef.current = "reverse";
+      if (!setPlaybackRate(video, -1)) {
+        playForward();
         return;
       }
 
-      directionRef.current = "reverse";
-      video.playbackRate = 1;
-      video.pause();
+      if (video.currentTime >= video.duration - 0.05) {
+        video.currentTime = Math.max(0, video.duration - 0.05);
+      }
 
-      let lastTs = performance.now();
-
-      const step = (now: number) => {
-        const delta = Math.min(0.05, (now - lastTs) / 1000);
-        lastTs = now;
-
-        if (video.currentTime <= 0.01) {
-          seekTo(0);
-          playForward();
-          return;
-        }
-
-        seekTo(video.currentTime - delta);
-        reverseRafRef.current = requestAnimationFrame(step);
-      };
-
-      reverseRafRef.current = requestAnimationFrame(step);
+      void video.play().catch(() => {});
     };
 
     const resumePlayback = () => {
-      setupVideo(video, { loop: !pingPong });
-      if (directionRef.current === "reverse") {
+      setupVideo(video, { loop: pingPong ? !pingPongActiveRef.current : true });
+
+      if (pingPongActiveRef.current && directionRef.current === "reverse") {
         playReverse();
         return;
       }
 
-      stopManualReverse();
-      video.playbackRate = 1;
+      setPlaybackRate(video, 1);
       if (video.paused) {
         void video.play().catch(() => {});
       }
     };
 
     const handleEnded = () => {
-      if (!pingPong) return;
+      if (!pingPongActiveRef.current) return;
       playReverse();
     };
 
     const handleTimeUpdate = () => {
-      if (!pingPong || directionRef.current !== "reverse") return;
-      if (!reverseSupportedRef.current) return;
+      if (!pingPongActiveRef.current || directionRef.current !== "reverse") return;
       if (video.currentTime <= 0.01) {
         playForward();
       }
@@ -221,13 +190,14 @@ export function MediaVideo({
     video.addEventListener("loadeddata", hideSkeleton);
     video.addEventListener("playing", hideSkeleton);
     video.addEventListener("canplay", handleCanPlay);
-    if (pingPong) {
+    if (pingPongActiveRef.current) {
       video.addEventListener("ended", handleEnded);
       video.addEventListener("timeupdate", handleTimeUpdate);
     }
 
     resumePlayback();
 
+    const observerTarget = video.closest("section") ?? video;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
@@ -235,32 +205,26 @@ export function MediaVideo({
           return;
         }
 
-        stopManualReverse();
         if (!video.paused) {
           video.pause();
         }
       },
-      { threshold: 0.1 },
+      { threshold: 0.35 },
     );
 
-    observer.observe(video);
+    observer.observe(observerTarget);
 
     const fallback = window.setTimeout(hideSkeleton, 1200);
 
-    const unlock = () => {
-      resumePlayback();
-      document.removeEventListener("touchstart", unlock);
-      document.removeEventListener("click", unlock);
-    };
+    const unlock = () => resumePlayback();
     document.addEventListener("touchstart", unlock, { passive: true, once: true });
     document.addEventListener("click", unlock, { once: true });
 
     return () => {
-      stopManualReverse();
       video.removeEventListener("loadeddata", hideSkeleton);
       video.removeEventListener("playing", hideSkeleton);
       video.removeEventListener("canplay", handleCanPlay);
-      if (pingPong) {
+      if (pingPongActiveRef.current) {
         video.removeEventListener("ended", handleEnded);
         video.removeEventListener("timeupdate", handleTimeUpdate);
       }

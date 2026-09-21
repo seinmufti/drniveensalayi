@@ -10,7 +10,6 @@ import { ClinicMap } from "./ClinicMap";
 import { MediaImage, MediaSlot, MediaVideo } from "./MediaSlot";
 import { SiteChrome, scrollToSection } from "./MobileNav";
 import { SectionLabel } from "./SectionLabel";
-import { VideoPlaybackInit } from "./VideoPlaybackInit";
 
 export function PortfolioPage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,7 +27,6 @@ export function PortfolioPage() {
 
   return (
     <div className="relative">
-      <VideoPlaybackInit />
       <CertificateLightbox
         image={certificateLightbox}
         onClose={() => setCertificateLightbox(null)}
@@ -280,23 +278,25 @@ export function PortfolioPage() {
         </div>
       </section>
 
-      <section id="contact" className="section-screen relative overflow-hidden">
-        <div className="absolute inset-0 size-full">
-          <MediaVideo
-            src="/videos/booking.mp4"
-            poster="/images/booking.jpg"
-            fill
-            pingPong
-          />
-        </div>
-        <div className="pointer-events-none absolute inset-0 z-[3] bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
-
+      <section id="contact" className="section-screen relative overflow-hidden bg-cream">
         <div className="contact-layout relative z-10 min-h-0 flex-1">
           <div className="contact-content px-6 text-center text-white">
+            <div className="contact-media absolute inset-0 overflow-hidden">
+              <MediaVideo
+                src="/videos/booking.mp4"
+                poster="/images/booking.jpg"
+                fill
+                pingPong
+                priority
+              />
+            </div>
+            <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/80 via-black/45 to-black/25" />
+
+            <div className="contact-content-inner relative z-[2] flex min-h-0 flex-1 flex-col justify-end">
             <h2 className="font-display text-[clamp(2rem,8svw,2.375rem)] leading-tight">
               I&apos;ll be expecting you
             </h2>
-            <div className="mx-auto mt-8 max-w-[360px] space-y-3 font-body text-[15px] leading-[1.7] text-white/95">
+            <div className="mx-auto mt-6 max-w-[360px] space-y-2.5 font-body text-[15px] leading-[1.7] text-white/95">
               <p>
                 <a
                   href="https://wa.me/9647510514001"
@@ -333,28 +333,37 @@ export function PortfolioPage() {
                 Erbil — Bakhtyari — Opposite of Zaga Mall
               </p>
             </div>
+            </div>
           </div>
 
-          <footer className="contact-footer flex items-center justify-between gap-3 bg-cream">
-            <span className="font-logo text-[26px] font-semibold leading-none tracking-[0.02em] text-[#2e1e1b]">
-              niveen
-            </span>
-            <p className="max-w-[157px] text-center font-body text-[11px] leading-[1.45] text-text-body">
+          <footer className="contact-footer bg-cream">
+            <div className="contact-footer-brand">
+              <span className="font-logo text-[26px] font-semibold leading-none tracking-[0.02em] text-[#2e1e1b]">
+                niveen
+              </span>
+            </div>
+
+            <p className="contact-footer-copy font-body text-[11px] leading-[1.45] text-text-body">
               © 2026 Dr. Niveen Salayi
               <br />
               All rights reserved
             </p>
-            <div className="text-right">
-              <p className="font-body text-[11px] text-text-body">Developed by</p>
-              <div className="mt-1 flex items-center justify-end gap-1.5">
+
+            <div className="contact-footer-credit">
+              <p className="font-body text-[11px] leading-none text-text-body">
+                Developed by
+              </p>
+              <div className="flex items-center justify-end gap-1.5">
                 <Image
                   src="/images/nordlys-logo.png"
                   alt="Nordlys"
                   width={20}
                   height={21}
-                  style={{ width: "auto", height: "auto" }}
+                  className="size-5 shrink-0"
                 />
-                <span className="font-body text-[13px] text-text-dark">Nordlys</span>
+                <span className="font-body text-[13px] leading-none text-text-dark">
+                  Nordlys
+                </span>
               </div>
             </div>
           </footer>

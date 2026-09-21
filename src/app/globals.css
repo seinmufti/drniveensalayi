@@ -6,6 +6,7 @@
   --header-h: calc(66px + env(safe-area-inset-top, 0px));
   --screen-h: 100vh;
   --screen-h: 100svh;
+  --frame-h: 100svh;
   --screen-w: 100vw;
   --screen-w: 100svw;
   --color-cream: #faf7f4;
@@ -117,12 +118,16 @@ body {
 }
 
 @media (min-width: 768px) {
+  :root {
+    --frame-h: min(956px, calc(100svh - 4rem));
+  }
+
   .site-chrome {
     left: 50%;
     top: 50%;
     width: 100%;
     max-width: 440px;
-    height: min(956px, calc(100svh - 4rem));
+    height: var(--frame-h);
     transform: translate(-50%, -50%);
     overflow: hidden;
     border-radius: 3rem;
@@ -289,9 +294,10 @@ body {
 #contact.section-screen {
   display: flex;
   flex-direction: column;
-  height: var(--screen-h);
-  min-height: var(--screen-h);
-  max-height: var(--screen-h);
+  height: calc(var(--frame-h) - var(--header-h));
+  min-height: calc(var(--frame-h) - var(--header-h));
+  max-height: calc(var(--frame-h) - var(--header-h));
+  scroll-margin-top: var(--header-h);
 }
 
 #contact .contact-layout {
@@ -299,19 +305,52 @@ body {
   grid-template-rows: minmax(0, 1fr) auto;
   flex: 1 1 auto;
   min-height: 0;
+  height: 100%;
 }
 
 #contact .contact-content {
+  position: relative;
   display: flex;
   min-height: 0;
   flex-direction: column;
-  justify-content: flex-end;
   overflow: hidden;
-  padding-bottom: 1rem;
+  padding-bottom: 2svh;
+}
+
+#contact .contact-media {
+  z-index: 0;
+}
+
+#contact .contact-content-inner {
+  min-height: 0;
+  flex: 1 1 auto;
 }
 
 #contact .contact-footer {
-  padding: 1.25rem 1.5rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 0.75rem;
+  padding: 2svh 1.5rem calc(2svh + env(safe-area-inset-bottom, 0px));
+}
+
+#contact .contact-footer-brand {
+  justify-self: start;
+}
+
+#contact .contact-footer-copy {
+  margin: 0;
+  max-width: 157px;
+  justify-self: center;
+  text-align: center;
+}
+
+#contact .contact-footer-credit {
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.375rem;
 }
 
 #find-me.section-screen {
