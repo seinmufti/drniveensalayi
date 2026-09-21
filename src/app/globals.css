@@ -266,17 +266,11 @@ body {
 #restor .restor-media {
   flex: 1 1 0;
   min-height: 0;
-  overflow: hidden;
 }
 
 #restor .section-copy {
-  position: relative;
-  z-index: 1;
   flex: 0 0 auto;
   min-height: auto;
-  overflow: visible;
-  padding-top: 1rem;
-  background: var(--color-cream);
 }
 
 #find-me.section-screen {
@@ -295,10 +289,6 @@ body {
 
 @media (min-width: 768px) {
   #achievements .section-copy {
-    padding-top: 1.5rem;
-  }
-
-  #restor .section-copy {
     padding-top: 1.5rem;
   }
 
