@@ -2,7 +2,7 @@
 
 .desktop-root {
   --desktop-header-h: 76px;
-  --desktop-section-h: calc(100svh - var(--desktop-header-h));
+  --desktop-section-h: 100svh;
   --desktop-pad-x: clamp(1.5rem, 4vw, 4.5rem);
   --desktop-max: 1440px;
   display: flex;
@@ -14,9 +14,11 @@
 }
 
 .desktop-header {
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
   z-index: 40;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -30,8 +32,14 @@
 }
 
 .desktop-header.is-over-hero {
-  color: #fff;
-  background: linear-gradient(to bottom, rgba(22, 19, 17, 0.55), rgba(22, 19, 17, 0));
+  color: #2e1e1b;
+  background: linear-gradient(
+    to bottom,
+    rgba(250, 247, 244, 0.9),
+    rgba(250, 247, 244, 0.45)
+  );
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   border-bottom: 1px solid transparent;
 }
 
@@ -78,7 +86,14 @@
   opacity: 1;
 }
 
+.desktop-header.is-over-hero .desktop-nav a,
+.desktop-header.is-solid .desktop-nav a {
+  opacity: 0.78;
+}
+
+.desktop-header.is-over-hero .desktop-nav a[aria-current="page"],
 .desktop-header.is-solid .desktop-nav a[aria-current="page"] {
+  opacity: 1;
   color: var(--color-accent);
 }
 
@@ -94,7 +109,7 @@
 
 .desktop-scroll {
   flex: 1 1 auto;
-  height: var(--desktop-section-h);
+  height: 100svh;
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
@@ -102,6 +117,11 @@
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: rgba(194, 125, 102, 0.45) transparent;
+  pointer-events: none;
+}
+
+.desktop-scroll > [data-desktop-section] {
+  pointer-events: auto;
 }
 
 .desktop-scroll::-webkit-scrollbar {
@@ -137,7 +157,8 @@
   height: 100%;
   min-height: 0;
   margin-inline: auto;
-  padding: clamp(0.75rem, 2vh, 1.25rem) var(--desktop-pad-x) clamp(1.25rem, 3vh, 2.25rem);
+  padding: calc(var(--desktop-header-h) + clamp(0.75rem, 2vh, 1.25rem)) var(--desktop-pad-x)
+    clamp(1.25rem, 3vh, 2.25rem);
 }
 
 .desktop-label {
@@ -255,64 +276,59 @@
 }
 
 .desktop-hero {
+  --hero-panel: #0c0b0a;
+  --hero-panel-mid: #10100e;
+  --hero-panel-soft: #141110;
+  --hero-panel-gold: rgba(212, 180, 106, 0.3);
+  --hero-panel-fade: rgba(12, 11, 10, 0.88);
   position: relative;
   display: grid;
   grid-template-columns: 45fr 55fr;
   align-items: stretch;
   overflow: hidden;
-  background: #141110;
+  background: var(--hero-panel-soft);
 }
 
 .desktop-hero-veil {
   pointer-events: none;
   position: absolute;
-  inset: 0;
-  z-index: 2;
-  background:
-    linear-gradient(
-      to right,
-      #141110 0%,
-      #141110 41%,
-      rgba(20, 17, 16, 0.82) 44%,
-      rgba(20, 17, 16, 0.34) 47%,
-      transparent 51%
-    ),
-    linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.28) 0%,
-      rgba(0, 0, 0, 0.06) 24%,
-      transparent 48%
-    );
-}
-
-.desktop-hero-veil::before {
-  content: "";
-  position: absolute;
   top: 0;
   bottom: 0;
-  left: 42%;
-  width: 6%;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  left: 0;
+  z-index: 3;
+  width: calc(45% + clamp(70px, 11vw, 170px));
+  background:
+    radial-gradient(
+      ellipse 95% 75% at 0% 100%,
+      var(--hero-panel-gold) 0%,
+      rgba(212, 180, 106, 0.08) 36%,
+      transparent 62%
+    ),
+    linear-gradient(
+      168deg,
+      var(--hero-panel) 0%,
+      var(--hero-panel-mid) 46%,
+      var(--hero-panel-soft) 100%
+    );
   -webkit-mask-image: linear-gradient(
     to right,
-    transparent 0%,
-    #000 40%,
-    #000 60%,
+    #000 0%,
+    #000 68%,
+    rgba(0, 0, 0, 0.55) 86%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
-    transparent 0%,
-    #000 40%,
-    #000 60%,
+    #000 0%,
+    #000 68%,
+    rgba(0, 0, 0, 0.55) 86%,
     transparent 100%
   );
 }
 
 .desktop-hero-copy {
   position: relative;
-  z-index: 3;
+  z-index: 4;
   align-self: stretch;
   display: flex;
   flex-direction: column;
@@ -322,56 +338,69 @@
   height: 100%;
   min-width: 0;
   padding: clamp(1.25rem, 3vh, 2.5rem) var(--desktop-pad-x);
+  background: transparent;
+}
+
+.desktop-hero-intro {
+  max-width: 36ch;
+  padding-left: clamp(0.65rem, 1.4vw, 1rem);
+  border-left: 1px solid rgba(212, 180, 106, 0.42);
 }
 
 .desktop-hero-media {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  top: var(--desktop-header-h);
+  right: 0;
+  bottom: 0;
+  left: 38%;
+  z-index: 2;
   min-width: 0;
-  min-height: 0;
   overflow: hidden;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
-    transparent 4%,
-    rgba(0, 0, 0, 0.45) 10%,
-    #000 18%
+    rgba(0, 0, 0, 0.35) 8%,
+    rgba(0, 0, 0, 0.72) 16%,
+    #000 28%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0,
-    transparent 4%,
-    rgba(0, 0, 0, 0.45) 10%,
-    #000 18%
+    rgba(0, 0, 0, 0.35) 8%,
+    rgba(0, 0, 0, 0.72) 16%,
+    #000 28%
   );
 }
 
 .desktop-hero-copy h1 {
   font-family: var(--font-cormorant), "Times New Roman", serif;
-  font-size: clamp(2.45rem, 4.2vw, 4.25rem);
+  font-size: clamp(2.55rem, 4.35vw, 4.35rem);
   font-weight: 500;
-  line-height: 0.92;
+  line-height: 0.94;
+  letter-spacing: -0.01em;
   white-space: nowrap;
-  color: #fff;
+  color: #faf7f4;
+  text-shadow: 0 1px 28px rgba(0, 0, 0, 0.28);
 }
 
 .desktop-kicker {
-  margin-top: 0.85rem;
+  margin-top: 0.95rem;
   font-family: var(--font-instrument), system-ui, sans-serif;
-  font-size: 13px;
-  letter-spacing: 0.16em;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.78);
+  color: #d4b46a;
 }
 
 .desktop-quote {
-  margin-top: 1.25rem;
+  margin-top: 1.45rem;
   font-family: var(--font-cormorant), "Times New Roman", serif;
-  font-size: clamp(1.15rem, 1.75vw, 1.55rem);
+  font-size: clamp(1.12rem, 1.65vw, 1.48rem);
   font-style: italic;
-  line-height: 1.35;
+  line-height: 1.4;
   white-space: nowrap;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(250, 247, 244, 0.86);
 }
 
 .desktop-split {
@@ -475,7 +504,7 @@
   min-height: 0;
   flex-direction: column;
   justify-content: flex-start;
-  padding: clamp(0.75rem, 2vh, 1.25rem) var(--desktop-pad-x)
+  padding: calc(var(--desktop-header-h) + clamp(0.75rem, 2vh, 1.25rem)) var(--desktop-pad-x)
     clamp(1.25rem, 3vh, 2.25rem);
 }
 
@@ -602,7 +631,8 @@ body[data-viewport="desktop"] .certificate-lightbox-image {
   width: min(100%, var(--desktop-max));
   height: 100%;
   margin-inline: auto;
-  padding: clamp(0.75rem, 2vh, 1.25rem) var(--desktop-pad-x) clamp(2.5rem, 7vh, 4.5rem);
+  padding: calc(var(--desktop-header-h) + clamp(0.75rem, 2vh, 1.25rem)) var(--desktop-pad-x)
+    clamp(2.5rem, 7vh, 4.5rem);
 }
 
 .desktop-bleed-body {

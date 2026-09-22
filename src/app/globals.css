@@ -120,8 +120,9 @@ html[data-viewport="desktop"] body {
   flex-shrink: 0;
 }
 
-#home,
-#home * {
+/* Mobile only: hero sits under fixed chrome, so clicks pass through to the header. */
+body[data-viewport="mobile"] #home,
+body[data-viewport="mobile"] #home * {
   pointer-events: none;
 }
 
