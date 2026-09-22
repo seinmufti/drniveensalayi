@@ -246,30 +246,6 @@ export function DesktopPortfolioPage() {
           data-desktop-section
           className="desktop-section desktop-section-cream desktop-achievements"
         >
-          <div className="desktop-achievements-media">
-            <MediaSlot className="desktop-media-fill">
-              <MediaImage
-                src="/images/academic.jpg"
-                alt="Dr. Niveen graduation"
-                sizes="50vw"
-                className="desktop-achievements-photo"
-              />
-            </MediaSlot>
-            <div className="desktop-certs">
-              <CertificateCard
-                src="/images/diploma.png"
-                alt="Diploma certificate"
-                label="View diploma certificate"
-                onOpen={setCertificateLightbox}
-              />
-              <CertificateCard
-                src="/images/bds-certificate.png"
-                alt="BDS certificate"
-                label="View BDS certificate"
-                onOpen={setCertificateLightbox}
-              />
-            </div>
-          </div>
           <div className="desktop-achievements-copy">
             <DesktopLabel>02 / Academic Achievements</DesktopLabel>
             <div className="desktop-copy">
@@ -279,6 +255,32 @@ export function DesktopPortfolioPage() {
                 and a BAIRD professional Diploma In Cosmetic and Restorative
                 Dentistry. I blend clinical precision with an artist&apos;s eye.
               </p>
+            </div>
+          </div>
+          <div className="desktop-achievements-media">
+            <div className="desktop-achievements-stage">
+              <MediaSlot className="desktop-media-fill">
+                <MediaImage
+                  src="/images/academic.jpg"
+                  alt="Dr. Niveen graduation"
+                  sizes="50vw"
+                  className="desktop-achievements-photo"
+                />
+              </MediaSlot>
+              <div className="desktop-certs">
+                <CertificateCard
+                  src="/images/diploma.png"
+                  alt="Diploma certificate"
+                  label="View diploma certificate"
+                  onOpen={setCertificateLightbox}
+                />
+                <CertificateCard
+                  src="/images/bds-certificate.png"
+                  alt="BDS certificate"
+                  label="View BDS certificate"
+                  onOpen={setCertificateLightbox}
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -349,8 +351,8 @@ export function DesktopPortfolioPage() {
           <div className="desktop-bleed-copy">
             <DesktopLabel light>05 / Restor</DesktopLabel>
             <div className="desktop-bleed-body">
-              <h2>From vision to reality.</h2>
               <p className="desktop-role">Co-founder of Restor Dental Clinic</p>
+              <h2>From vision to reality.</h2>
               <p className="desktop-body">
                 Building a dental clinic from the ground up was never easy — but every
                 detail of Restor was shaped by a dream to create something truly
@@ -374,7 +376,6 @@ export function DesktopPortfolioPage() {
                     src="/videos/find-me.mp4"
                     poster="/images/find-me.jpg"
                     fill
-                    className="!object-cover"
                   />
                 </div>
               </div>
