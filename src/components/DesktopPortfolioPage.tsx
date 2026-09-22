@@ -348,13 +348,15 @@ export function DesktopPortfolioPage() {
           <div className="desktop-bleed-shade" />
           <div className="desktop-bleed-copy">
             <DesktopLabel light>05 / Restor</DesktopLabel>
-            <h2>From vision to reality.</h2>
-            <p className="desktop-role">Co-founder of Restor Dental Clinic</p>
-            <p className="desktop-body">
-              Building a dental clinic from the ground up was never easy — but every
-              detail of Restor was shaped by a dream to create something truly
-              aesthetically unique..
-            </p>
+            <div className="desktop-bleed-body">
+              <h2>From vision to reality.</h2>
+              <p className="desktop-role">Co-founder of Restor Dental Clinic</p>
+              <p className="desktop-body">
+                Building a dental clinic from the ground up was never easy — but every
+                detail of Restor was shaped by a dream to create something truly
+                aesthetically unique..
+              </p>
+            </div>
           </div>
         </section>
 
@@ -388,35 +390,43 @@ export function DesktopPortfolioPage() {
         </section>
 
         <section id="contact" data-desktop-section className="desktop-section desktop-contact">
-          <DesktopVideoStage
-            src="/videos/contact.mp4?v=3754"
-            poster="/images/contact.jpg"
-            nativeWidth={1072}
-            align="center"
-            objectPosition="object-[50%_28%]"
-            priority
-          />
-          <div className="desktop-bleed-shade" />
-          <div className="desktop-contact-copy">
-            <h2>I&apos;ll be expecting you</h2>
-            <div className="desktop-contact-links">
-              <a href="https://wa.me/9647510514001" target="_blank" rel="noopener noreferrer">
-                WhatsApp: +964 751 051 4001
-              </a>
-              <a
-                href="https://instagram.com/dr.niveen_salayi"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Instagram: dr.niveen_salayi
-              </a>
-              <a
-                href="https://instagram.com/restor.dental"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Clinic Instagram: restor.dental
-              </a>
+          <div className="desktop-contact-media">
+            <div
+              aria-hidden
+              className="desktop-contact-backdrop"
+              style={{ backgroundImage: 'url("/images/contact.jpg")' }}
+            />
+            <div className="desktop-contact-frame">
+              <MediaVideo
+                src="/videos/contact.mp4?v=3754"
+                poster="/images/contact.jpg"
+                fill
+                priority
+                className="object-[50%_28%]"
+              />
+            </div>
+            <div className="desktop-bleed-shade" aria-hidden />
+            <div className="desktop-contact-copy">
+              <h2>I&apos;ll be expecting you</h2>
+              <div className="desktop-contact-links">
+                <a href="https://wa.me/9647510514001" target="_blank" rel="noopener noreferrer">
+                  WhatsApp: +964 751 051 4001
+                </a>
+                <a
+                  href="https://instagram.com/dr.niveen_salayi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Instagram: dr.niveen_salayi
+                </a>
+                <a
+                  href="https://instagram.com/restor.dental"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Clinic Instagram: restor.dental
+                </a>
+              </div>
             </div>
           </div>
           <footer className="desktop-footer">
