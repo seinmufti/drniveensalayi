@@ -5,6 +5,7 @@ import {
   Instrument_Sans,
 } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
+import { ViewportInitScript } from "@/components/ViewportInitScript";
 import "./globals.css";
 import "./desktop.css";
 
@@ -48,9 +49,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${cormorant.variable} ${instrument.variable} ${dancing.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full">{children}</body>
+      <head>
+        <ViewportInitScript />
+      </head>
+      <body className="min-h-full" suppressHydrationWarning>
+        <ViewportInitScript />
+        {children}
+      </body>
     </html>
   );
 }

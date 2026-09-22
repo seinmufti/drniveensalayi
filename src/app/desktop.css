@@ -244,7 +244,6 @@
   }
 }
 
-.desktop-hero-shade,
 .desktop-bleed-shade {
   pointer-events: none;
   position: absolute;
@@ -252,13 +251,34 @@
   z-index: 2;
 }
 
-.desktop-hero-shade {
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.72) 0%,
-    rgba(0, 0, 0, 0.18) 42%,
-    rgba(0, 0, 0, 0.18) 100%
-  );
+.desktop-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  background: #141110;
+}
+
+.desktop-hero-veil {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(
+      to right,
+      #141110 0%,
+      #141110 46%,
+      rgba(20, 17, 16, 0.82) 49%,
+      rgba(20, 17, 16, 0.34) 52%,
+      transparent 56%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.28) 0%,
+      rgba(0, 0, 0, 0.06) 24%,
+      transparent 48%
+    );
 }
 
 .desktop-hero-copy {
@@ -266,24 +286,49 @@
   z-index: 3;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  width: min(100%, var(--desktop-max));
-  height: 100%;
-  margin-inline: auto;
-  padding: var(--desktop-header-h) var(--desktop-pad-x) clamp(3rem, 8vh, 5.5rem);
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  min-height: 0;
+  padding: calc(var(--desktop-header-h) + clamp(1.25rem, 3vh, 2.5rem)) var(--desktop-pad-x)
+    clamp(3rem, 8vh, 5.5rem);
+}
+
+.desktop-hero-media {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent 8%,
+    rgba(0, 0, 0, 0.28) 16%,
+    rgba(0, 0, 0, 0.72) 24%,
+    #000 32%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent 8%,
+    rgba(0, 0, 0, 0.28) 16%,
+    rgba(0, 0, 0, 0.72) 24%,
+    #000 32%
+  );
 }
 
 .desktop-hero-copy h1 {
-  max-width: 14ch;
   font-family: var(--font-cormorant), "Times New Roman", serif;
-  font-size: clamp(3.5rem, 6.4vw, 6.75rem);
+  font-size: clamp(2.45rem, 4.2vw, 4.25rem);
   font-weight: 500;
   line-height: 0.92;
+  white-space: nowrap;
   color: #fff;
 }
 
 .desktop-kicker {
-  margin-bottom: 1rem;
+  margin-top: 0.85rem;
   font-family: var(--font-instrument), system-ui, sans-serif;
   font-size: 13px;
   letter-spacing: 0.16em;
@@ -354,22 +399,62 @@
   height: 100%;
 }
 
+.desktop-achievements {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100%;
+  min-height: 0;
+}
+
+.desktop-achievements-media {
+  position: relative;
+  height: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-cream);
+}
+
+.desktop-achievements-photo {
+  object-fit: contain !important;
+  object-position: center center;
+}
+
+.desktop-achievements-copy {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--desktop-header-h) + 0.5rem) var(--desktop-pad-x)
+    clamp(1.25rem, 3vh, 2.25rem);
+}
+
 .desktop-certs {
   position: absolute;
-  right: 1.25rem;
-  bottom: 1.25rem;
+  inset: 0;
   z-index: 3;
-  display: flex;
-  gap: 0.85rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  padding-inline: clamp(1.75rem, 14%, 4rem);
+  pointer-events: none;
 }
 
 .desktop-cert {
-  width: 200px;
+  width: min(180px, 72%);
   border: 0;
   background: transparent;
   padding: 0;
   cursor: pointer;
+  pointer-events: auto;
   transition: transform 220ms ease;
+}
+
+.desktop-cert-photo {
+  object-fit: contain !important;
 }
 
 .desktop-cert:hover {
@@ -397,17 +482,48 @@ body[data-viewport="desktop"] .certificate-lightbox-image {
   display: flex;
   min-height: 0;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 0.85rem;
+}
+
+.desktop-case-media-row {
+  display: flex;
+  width: 100%;
+  align-self: stretch;
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+.desktop-case-gutter {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.desktop-case-gutter:first-child {
+  background: linear-gradient(to right, #152238, #3d6a9e);
+}
+
+.desktop-case-gutter:last-child {
+  background: linear-gradient(to left, #152238, #3d6a9e);
 }
 
 .desktop-case-media {
   position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 60%;
+  width: 60%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--color-cream);
+}
+
+.desktop-case-photo {
+  object-fit: contain !important;
 }
 
 .desktop-case p {
   flex-shrink: 0;
+  align-self: stretch;
   max-width: none;
   margin-top: 0;
   padding-left: 0.85rem;
@@ -635,7 +751,7 @@ body[data-viewport="desktop"] .certificate-lightbox-image {
   }
 
   .desktop-certs .desktop-cert {
-    width: 150px;
+    width: min(150px, 88%);
   }
 }
 

@@ -113,7 +113,12 @@ function CertificateCard({
       }}
     >
       <MediaSlot className="aspect-[200/147] w-full shadow-lg">
-        <MediaImage src={src} alt={alt} sizes="220px" />
+        <MediaImage
+          src={src}
+          alt={alt}
+          sizes="220px"
+          className="desktop-cert-photo"
+        />
       </MediaSlot>
     </button>
   );
@@ -182,19 +187,20 @@ export function DesktopPortfolioPage() {
       </header>
 
       <div className="desktop-scroll">
-        <section id="home" data-desktop-section className="desktop-section">
-          <DesktopVideoStage
-            src="/videos/hero-reel.mp4"
-            poster="/images/hero-reel.jpg"
-            nativeWidth={720}
-            align="right"
-            priority
-          />
-          <div className="desktop-hero-shade" />
+        <section id="home" data-desktop-section className="desktop-section desktop-hero">
+          <div className="desktop-hero-veil" aria-hidden />
           <div className="desktop-hero-copy">
-            <p className="desktop-kicker">(BDS, GP) Cosmetics and Restorative Dentist</p>
             <h1>Dr. Niveen Salayi</h1>
+            <p className="desktop-kicker">(BDS, GP) Cosmetics and Restorative Dentist</p>
             <p className="desktop-quote">&ldquo;Dentistry, with a touch of personality.&rdquo;</p>
+          </div>
+          <div className="desktop-hero-media">
+            <MediaVideo
+              src="/videos/hero-reel.mp4"
+              poster="/images/hero-reel.jpg"
+              priority
+              fill
+            />
           </div>
         </section>
 
@@ -238,42 +244,41 @@ export function DesktopPortfolioPage() {
         <section
           id="achievements"
           data-desktop-section
-          className="desktop-section desktop-section-cream"
+          className="desktop-section desktop-section-cream desktop-achievements"
         >
-          <div className="desktop-section-inner">
+          <div className="desktop-achievements-media">
+            <MediaSlot className="desktop-media-fill">
+              <MediaImage
+                src="/images/academic.jpg"
+                alt="Dr. Niveen graduation"
+                sizes="50vw"
+                className="desktop-achievements-photo"
+              />
+            </MediaSlot>
+            <div className="desktop-certs">
+              <CertificateCard
+                src="/images/diploma.png"
+                alt="Diploma certificate"
+                label="View diploma certificate"
+                onOpen={setCertificateLightbox}
+              />
+              <CertificateCard
+                src="/images/bds-certificate.png"
+                alt="BDS certificate"
+                label="View BDS certificate"
+                onOpen={setCertificateLightbox}
+              />
+            </div>
+          </div>
+          <div className="desktop-achievements-copy">
             <DesktopLabel>02 / Academic Achievements</DesktopLabel>
-            <div className="desktop-split desktop-split-reverse">
-              <div className="desktop-photo-stage">
-                <MediaSlot className="desktop-media-fill">
-                  <MediaImage
-                    src="/images/academic.jpg"
-                    alt="Dr. Niveen graduation"
-                    sizes="60vw"
-                  />
-                </MediaSlot>
-                <div className="desktop-certs">
-                  <CertificateCard
-                    src="/images/diploma.png"
-                    alt="Diploma certificate"
-                    label="View diploma certificate"
-                    onOpen={setCertificateLightbox}
-                  />
-                  <CertificateCard
-                    src="/images/bds-certificate.png"
-                    alt="BDS certificate"
-                    label="View BDS certificate"
-                    onOpen={setCertificateLightbox}
-                  />
-                </div>
-              </div>
-              <div className="desktop-copy">
-                <h2>Memorable smiles start with trust.</h2>
-                <p>
-                  With 8 years of experience in cosmetic and restorative dentistry,
-                  and a BAIRD professional Diploma In Cosmetic and Restorative
-                  Dentistry. I blend clinical precision with an artist&apos;s eye.
-                </p>
-              </div>
+            <div className="desktop-copy">
+              <h2>Memorable smiles start with trust.</h2>
+              <p>
+                With 8 years of experience in cosmetic and restorative dentistry,
+                and a BAIRD professional Diploma In Cosmetic and Restorative
+                Dentistry. I blend clinical precision with an artist&apos;s eye.
+              </p>
             </div>
           </div>
         </section>
@@ -287,14 +292,19 @@ export function DesktopPortfolioPage() {
             <DesktopLabel>03 case studies</DesktopLabel>
             <div className="desktop-cases">
               <article className="desktop-case">
-                <div className="desktop-case-media">
-                  <MediaSlot className="desktop-media-fill">
-                    <MediaImage
-                      src="/images/case-emax.jpg"
-                      alt="Emax ceramic overlay case"
-                      sizes="46vw"
-                    />
-                  </MediaSlot>
+                <div className="desktop-case-media-row">
+                  <div className="desktop-case-gutter" aria-hidden="true" />
+                  <div className="desktop-case-media">
+                    <MediaSlot className="desktop-media-fill">
+                      <MediaImage
+                        src="/images/case-emax.jpg"
+                        alt="Emax ceramic overlay case"
+                        sizes="28vw"
+                        className="desktop-case-photo"
+                      />
+                    </MediaSlot>
+                  </div>
+                  <div className="desktop-case-gutter" aria-hidden="true" />
                 </div>
                 <p>
                   Amalgam dental cavity replacement with Emax ceramic overlay -
@@ -303,14 +313,19 @@ export function DesktopPortfolioPage() {
                 </p>
               </article>
               <article className="desktop-case">
-                <div className="desktop-case-media">
-                  <MediaSlot className="desktop-media-fill">
-                    <MediaImage
-                      src="/images/case-bleaching.jpg"
-                      alt="Professional bleaching case"
-                      sizes="46vw"
-                    />
-                  </MediaSlot>
+                <div className="desktop-case-media-row">
+                  <div className="desktop-case-gutter" aria-hidden="true" />
+                  <div className="desktop-case-media">
+                    <MediaSlot className="desktop-media-fill">
+                      <MediaImage
+                        src="/images/case-bleaching.jpg"
+                        alt="Professional bleaching case"
+                        sizes="28vw"
+                        className="desktop-case-photo"
+                      />
+                    </MediaSlot>
+                  </div>
+                  <div className="desktop-case-gutter" aria-hidden="true" />
                 </div>
                 <p>
                   Professional bleaching treatment to remove deep cigarette stains -
@@ -431,7 +446,7 @@ export function DesktopPortfolioPage() {
                   alt="Nordlys"
                   width={20}
                   height={21}
-                  className="shrink-0"
+                  className="h-5 w-auto shrink-0"
                 />
                 Nordlys
               </span>
