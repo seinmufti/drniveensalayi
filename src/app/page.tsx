@@ -1,10 +1,5 @@
-import { PhoneShell } from "@/components/PhoneShell";
-import { PortfolioPage } from "@/components/PortfolioPage";
+import { ResponsiveSite } from "@/components/ResponsiveSite";
 
 export default function Home() {
-  return (
-    <PhoneShell>
-      <PortfolioPage />
-    </PhoneShell>
-  );
+  return <ResponsiveSite />;
 }

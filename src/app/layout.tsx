@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "./desktop.css";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",

@@ -235,7 +235,7 @@ export function PortfolioPage() {
           />
           <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-          <div className="section-copy restor-copy absolute inset-x-0 bottom-0 z-[3] bg-black/25 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] backdrop-blur-[40px] md:pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]">
+          <div className="section-copy restor-copy absolute inset-x-0 bottom-0 z-[3] bg-black/10 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] backdrop-blur-[40px] md:pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]">
             <div className="space-y-3 px-6 md:space-y-4">
               <h2 className="font-display text-[clamp(1.5rem,5svw,1.8125rem)] font-semibold leading-tight text-white">
                 From vision to reality.

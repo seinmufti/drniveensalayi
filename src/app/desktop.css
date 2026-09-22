@@ -1,0 +1,9 @@
+/* Desktop-only styles. Scope every rule under .desktop-site so mobile is unaffected. */
+
+.desktop-site {
+  --desktop-max-width: 1440px;
+}
+
+.desktop-page {
+  color: var(--color-cream);
+}
