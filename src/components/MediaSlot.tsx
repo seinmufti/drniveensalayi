@@ -100,6 +100,7 @@ function setPlaybackRate(video: HTMLVideoElement, rate: number) {
 
 export function MediaVideo({
   src,
+  reverseSrc,
   poster,
   className = "",
   priority = false,
@@ -107,6 +108,7 @@ export function MediaVideo({
   pingPong = false,
 }: {
   src: string;
+  reverseSrc?: string;
   poster: string;
   className?: string;
   priority?: boolean;
@@ -114,12 +116,98 @@ export function MediaVideo({
   pingPong?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const forwardRef = useRef<HTMLVideoElement>(null);
+  const reverseRef = useRef<HTMLVideoElement>(null);
   const directionRef = useRef<"forward" | "reverse">("forward");
   const pingPongActiveRef = useRef(false);
+  const useDualClip = pingPong && !!reverseSrc;
   const [showSkeleton, setShowSkeleton] = useState(true);
+  const [activeClip, setActiveClip] = useState<"forward" | "reverse">("forward");
 
   useEffect(() => {
     setShowSkeleton(true);
+
+    if (useDualClip) {
+      const forward = forwardRef.current;
+      const reverse = reverseRef.current;
+      if (!forward || !reverse) {
+        const t = window.setTimeout(() => setShowSkeleton(false), 1200);
+        return () => window.clearTimeout(t);
+      }
+
+      directionRef.current = "forward";
+      setupVideo(forward, { loop: false });
+      setupVideo(reverse, { loop: false });
+
+      const hideSkeleton = () => setShowSkeleton(false);
+
+      const playForward = () => {
+        directionRef.current = "forward";
+        setActiveClip("forward");
+        reverse.pause();
+        forward.currentTime = 0;
+        void forward.play().catch(() => {});
+      };
+
+      const playReverse = () => {
+        directionRef.current = "reverse";
+        setActiveClip("reverse");
+        forward.pause();
+        reverse.currentTime = 0;
+        void reverse.play().catch(() => {});
+      };
+
+      const resumePlayback = () => {
+        if (directionRef.current === "reverse") {
+          if (reverse.paused) void reverse.play().catch(() => {});
+          return;
+        }
+
+        if (forward.paused) void forward.play().catch(() => {});
+      };
+
+      const handleForwardEnded = () => playReverse();
+      const handleReverseEnded = () => playForward();
+
+      forward.addEventListener("loadeddata", hideSkeleton);
+      forward.addEventListener("playing", hideSkeleton);
+      forward.addEventListener("ended", handleForwardEnded);
+      reverse.addEventListener("ended", handleReverseEnded);
+
+      playForward();
+
+      const observerTarget = forward.closest("section") ?? forward;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry?.isIntersecting) {
+            resumePlayback();
+            return;
+          }
+
+          forward.pause();
+          reverse.pause();
+        },
+        { threshold: 0.35 },
+      );
+
+      observer.observe(observerTarget);
+
+      const fallback = window.setTimeout(hideSkeleton, 1200);
+      const unlock = () => resumePlayback();
+      document.addEventListener("touchstart", unlock, { passive: true, once: true });
+      document.addEventListener("click", unlock, { once: true });
+
+      return () => {
+        forward.removeEventListener("loadeddata", hideSkeleton);
+        forward.removeEventListener("playing", hideSkeleton);
+        forward.removeEventListener("ended", handleForwardEnded);
+        reverse.removeEventListener("ended", handleReverseEnded);
+        observer.disconnect();
+        document.removeEventListener("touchstart", unlock);
+        document.removeEventListener("click", unlock);
+        window.clearTimeout(fallback);
+      };
+    }
 
     const video = videoRef.current;
     if (!video) {
@@ -184,7 +272,6 @@ export function MediaVideo({
 
     const handleCanPlay = () => {
       resumePlayback();
-      video.removeEventListener("canplay", handleCanPlay);
     };
 
     video.addEventListener("loadeddata", hideSkeleton);
@@ -233,14 +320,50 @@ export function MediaVideo({
       document.removeEventListener("click", unlock);
       window.clearTimeout(fallback);
     };
-  }, [src, pingPong]);
+  }, [src, reverseSrc, pingPong, useDualClip]);
 
   const wrapperClass = fill
     ? "pointer-events-none relative size-full"
     : "pointer-events-none absolute inset-0";
   const videoClass = fill
     ? "video-cover pointer-events-none size-full object-cover"
-    : "video-cover pointer-events-none absolute inset-0 z-[1] size-full object-cover";
+    : "video-cover pointer-events-none absolute inset-0 size-full object-cover";
+
+  const sharedVideoProps = {
+    autoPlay: true,
+    muted: true,
+    playsInline: true,
+    preload: priority ? "auto" : "metadata",
+    poster,
+    width: 720,
+    height: 1280,
+  } as const;
+
+  if (useDualClip) {
+    return (
+      <div className={wrapperClass}>
+        <MediaSkeleton visible={showSkeleton} />
+        <video
+          ref={forwardRef}
+          src={src}
+          loop={false}
+          {...sharedVideoProps}
+          className={`${videoClass} ${className} ${
+            activeClip === "forward" ? "z-[1] opacity-100" : "z-0 opacity-0"
+          }`}
+        />
+        <video
+          ref={reverseRef}
+          src={reverseSrc}
+          loop={false}
+          {...sharedVideoProps}
+          className={`${videoClass} ${className} ${
+            activeClip === "reverse" ? "z-[1] opacity-100" : "z-0 opacity-0"
+          }`}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={wrapperClass}>
@@ -248,15 +371,9 @@ export function MediaVideo({
       <video
         ref={videoRef}
         src={src}
-        autoPlay
         loop={!pingPong}
-        muted
-        playsInline
-        preload={priority ? "auto" : "metadata"}
-        poster={poster}
-        width={720}
-        height={1280}
-        className={`${videoClass} ${className}`}
+        {...sharedVideoProps}
+        className={`${videoClass} z-[1] ${className}`}
       />
     </div>
   );
