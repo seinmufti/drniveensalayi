@@ -1,9 +1,653 @@
-/* Desktop-only styles. Scope every rule under .desktop-site so mobile is unaffected. */
+/* Desktop-only styles. Every rule is scoped under .desktop-root. */
 
-.desktop-site {
-  --desktop-max-width: 1440px;
+.desktop-root {
+  --desktop-header-h: 76px;
+  --desktop-pad-x: clamp(1.5rem, 4vw, 4.5rem);
+  --desktop-max: 1440px;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--color-cream);
+  color: var(--color-text);
 }
 
-.desktop-page {
-  color: var(--color-cream);
+.desktop-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  height: var(--desktop-header-h);
+  padding: 0 var(--desktop-pad-x);
+  transition:
+    background-color 280ms ease,
+    color 280ms ease,
+    border-color 280ms ease;
+}
+
+.desktop-header.is-over-hero {
+  color: #fff;
+  background: linear-gradient(to bottom, rgba(22, 19, 17, 0.55), rgba(22, 19, 17, 0));
+  border-bottom: 1px solid transparent;
+}
+
+.desktop-header.is-solid {
+  color: #2e1e1b;
+  background: rgba(250, 247, 244, 0.92);
+  border-bottom: 1px solid rgba(47, 36, 31, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+.desktop-logo {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-family: var(--font-dancing), cursive;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: inherit;
+  cursor: pointer;
+}
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.6vw, 1.75rem);
+}
+
+.desktop-nav a {
+  font-family: var(--font-instrument), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.72;
+  transition: opacity 200ms ease, color 200ms ease;
+}
+
+.desktop-nav a:hover,
+.desktop-nav a[aria-current="page"] {
+  opacity: 1;
+}
+
+.desktop-header.is-solid .desktop-nav a[aria-current="page"] {
+  color: var(--color-accent);
+}
+
+.desktop-logo:focus-visible,
+.desktop-nav a:focus-visible,
+.desktop-cert:focus-visible,
+.desktop-contact-links a:focus-visible,
+.desktop-footer a:focus-visible,
+.desktop-footer button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.desktop-scroll {
+  height: 100svh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(194, 125, 102, 0.45) transparent;
+}
+
+.desktop-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.desktop-scroll::-webkit-scrollbar-thumb {
+  background: rgba(194, 125, 102, 0.45);
+  border-radius: 999px;
+}
+
+.desktop-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  min-height: 100svh;
+  max-height: 100svh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.desktop-section-cream {
+  background: var(--color-cream);
+}
+
+.desktop-section-inner {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: min(100%, var(--desktop-max));
+  height: 100%;
+  min-height: 0;
+  margin-inline: auto;
+  padding: calc(var(--desktop-header-h) + 0.5rem) var(--desktop-pad-x) clamp(1.25rem, 3vh, 2.25rem);
+}
+
+.desktop-label {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: clamp(0.75rem, 2vh, 1.25rem);
+}
+
+.desktop-label span:first-child {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.desktop-label-rule {
+  width: 2.5rem;
+  height: 1px;
+  background: rgba(194, 125, 102, 0.6);
+}
+
+.desktop-label-light span:first-child {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.desktop-label-light .desktop-label-rule {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.desktop-media-fill {
+  height: 100%;
+  min-height: 0;
+}
+
+/* Full-bleed video stage: a blurred poster fills the section while the sharp
+   clip is capped near its native width so it is never noticeably upscaled. */
+.desktop-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #141110;
+}
+
+.desktop-stage-backdrop {
+  position: absolute;
+  inset: -8%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(44px) saturate(1.1) brightness(0.52);
+  transform: scale(1.12);
+}
+
+.desktop-stage-pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: min(100%, var(--stage-w, 100%));
+  overflow: hidden;
+  box-shadow: 0 0 90px rgba(0, 0, 0, 0.55);
+}
+
+/* Feather the inner edges so the sharp clip melts into the blurred bleed. */
+.desktop-stage-left {
+  left: 0;
+  -webkit-mask-image: linear-gradient(to left, transparent 0, #000 110px);
+  mask-image: linear-gradient(to left, transparent 0, #000 110px);
+}
+
+.desktop-stage-right {
+  right: 0;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 110px);
+  mask-image: linear-gradient(to right, transparent 0, #000 110px);
+}
+
+.desktop-stage-center {
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 110px,
+    #000 calc(100% - 110px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 110px,
+    #000 calc(100% - 110px),
+    transparent 100%
+  );
+}
+
+/* When the pane already spans the section there is no bleed to blend into. */
+@media (max-width: 900px) {
+  .desktop-stage-left,
+  .desktop-stage-right,
+  .desktop-stage-center {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+.desktop-hero-shade,
+.desktop-bleed-shade {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.desktop-hero-shade {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.18) 42%,
+    rgba(0, 0, 0, 0.18) 100%
+  );
+}
+
+.desktop-hero-copy {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: min(100%, var(--desktop-max));
+  height: 100%;
+  margin-inline: auto;
+  padding: var(--desktop-header-h) var(--desktop-pad-x) clamp(3rem, 8vh, 5.5rem);
+}
+
+.desktop-hero-copy h1 {
+  max-width: 14ch;
+  font-family: var(--font-cormorant), "Times New Roman", serif;
+  font-size: clamp(3.5rem, 6.4vw, 6.75rem);
+  font-weight: 500;
+  line-height: 0.92;
+  color: #fff;
+}
+
+.desktop-kicker {
+  margin-bottom: 1rem;
+  font-family: var(--font-instrument), system-ui, sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.desktop-quote {
+  max-width: 28ch;
+  margin-top: 1.25rem;
+  font-family: var(--font-cormorant), "Times New Roman", serif;
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  font-style: italic;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.desktop-split {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(1.5rem, 3vw, 3.5rem);
+  min-height: 0;
+}
+
+.desktop-split-reverse {
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+}
+
+.desktop-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+}
+
+.desktop-copy h2,
+.desktop-contact-copy h2 {
+  font-family: var(--font-cormorant), "Times New Roman", serif;
+  font-size: clamp(2.4rem, 3.6vw, 4rem);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.desktop-copy p,
+.desktop-case p,
+.desktop-find-copy p {
+  max-width: 38ch;
+  margin-top: 1rem;
+  font-family: var(--font-instrument), system-ui, sans-serif;
+  font-size: clamp(0.95rem, 1.1vw, 1.0625rem);
+  line-height: 1.7;
+  color: var(--color-text-body);
+}
+
+.desktop-about-media {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  min-height: 0;
+  height: 100%;
+}
+
+.desktop-photo-stage {
+  position: relative;
+  min-height: 0;
+  height: 100%;
+}
+
+.desktop-certs {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 3;
+  display: flex;
+  gap: 0.85rem;
+}
+
+.desktop-cert {
+  width: 200px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 220ms ease;
+}
+
+.desktop-cert:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* Portalled lightbox lives on <body>, so it is scoped by the desktop marker. */
+body[data-viewport="desktop"] .certificate-lightbox-panel {
+  max-width: min(72vw, 780px);
+}
+
+body[data-viewport="desktop"] .certificate-lightbox-image {
+  max-height: 82vh;
+}
+
+.desktop-cases {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1rem, 2vw, 2rem);
+  min-height: 0;
+}
+
+.desktop-case {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.desktop-case-media {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.desktop-case p {
+  flex-shrink: 0;
+  max-width: none;
+  margin-top: 0;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--color-accent);
+}
+
+.desktop-bleed-shade {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.2) 38%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+}
+
+.desktop-bleed-copy {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: min(100%, var(--desktop-max));
+  height: 100%;
+  margin-inline: auto;
+  padding: var(--desktop-header-h) var(--desktop-pad-x) clamp(2.5rem, 7vh, 4.5rem);
+}
+
+.desktop-bleed-copy h2 {
+  max-width: 12ch;
+  font-family: var(--font-cormorant), "Times New Roman", serif;
+  font-size: clamp(2.8rem, 4.5vw, 4.75rem);
+  font-weight: 500;
+  line-height: 1;
+  color: #fff;
+}
+
+.desktop-bleed-copy .desktop-role,
+.desktop-bleed-copy .desktop-body {
+  max-width: 46ch;
+  font-family: var(--font-instrument), system-ui, sans-serif;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.desktop-bleed-copy .desktop-role {
+  margin-top: 0.85rem;
+  font-size: 1.05rem;
+}
+
+.desktop-bleed-copy .desktop-body {
+  margin-top: 0.65rem;
+  font-size: 1rem;
+}
+
+.desktop-find-layout {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1.15fr);
+  gap: clamp(1.25rem, 3vw, 3rem);
+  min-height: 0;
+}
+
+.desktop-find-video {
+  display: flex;
+  min-height: 0;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(
+    to bottom,
+    var(--color-cream) 0%,
+    #dccfc2 25%,
+    #c4b09a 70%,
+    #a8957e 100%
+  );
+}
+
+.desktop-find-frame {
+  position: relative;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: 9 / 16;
+}
+
+.desktop-find-copy {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 0.5rem;
+}
+
+.desktop-find-copy h2 {
+  font-family: var(--font-cormorant), "Times New Roman", serif;
+  font-size: clamp(2.2rem, 3vw, 3.25rem);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--color-text-dark);
+}
+
+.desktop-map {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 1.25rem;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  box-shadow: 0 18px 50px rgba(47, 36, 31, 0.12);
+}
+
+.desktop-contact {
+  background: #161311;
+}
+
+.desktop-contact-copy {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 0;
+  padding: var(--desktop-header-h) var(--desktop-pad-x) clamp(1.5rem, 4vh, 3rem);
+  text-align: center;
+  color: #fff;
+}
+
+.desktop-contact-copy h2 {
+  font-weight: 500;
+  color: #fff;
+}
+
+.desktop-contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.75rem;
+  max-width: 920px;
+  margin-top: 1.5rem;
+}
+
+.desktop-contact-links a {
+  font-family: var(--font-instrument), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.94);
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(255, 255, 255, 0.3);
+}
+
+.desktop-contact-links a:hover {
+  color: #fff;
+  text-decoration-color: var(--color-accent);
+}
+
+.desktop-footer {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  flex-shrink: 0;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem var(--desktop-pad-x) 1.25rem;
+  background: #161311;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.desktop-footer-brand {
+  justify-self: start;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-family: var(--font-dancing), cursive;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+}
+
+.desktop-footer p {
+  margin: 0;
+  font-family: var(--font-instrument), system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.desktop-footer-credit {
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.desktop-footer-credit span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-instrument), system-ui, sans-serif;
+  font-size: 14px;
+  color: #fff;
+}
+
+@media (max-width: 1100px) {
+  .desktop-nav {
+    gap: 0.7rem;
+  }
+
+  .desktop-nav a {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .desktop-split,
+  .desktop-split-reverse,
+  .desktop-find-layout {
+    gap: 1.25rem;
+  }
+
+  .desktop-certs .desktop-cert {
+    width: 150px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desktop-scroll {
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+  }
+
+  .desktop-header,
+  .desktop-cert,
+  .desktop-nav a {
+    transition: none;
+  }
 }
