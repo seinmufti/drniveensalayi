@@ -265,7 +265,10 @@ export function MediaVideo({
     pingPongActiveRef.current = pingPong && supportsReversePlayback(video);
     setupVideo(video, { loop: pingPong ? !pingPongActiveRef.current : true });
 
-    const hideSkeleton = () => setShowSkeleton(false);
+    const hideSkeleton = () => {
+      setShowSkeleton(false);
+      video.removeAttribute("poster");
+    };
 
     const playForward = () => {
       directionRef.current = "forward";

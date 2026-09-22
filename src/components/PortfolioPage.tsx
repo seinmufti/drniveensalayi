@@ -235,7 +235,7 @@ export function PortfolioPage() {
           />
           <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-          <div className="section-copy restor-copy absolute inset-x-0 bottom-0 z-[3] bg-black/35 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] backdrop-blur-[40px] md:pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]">
+          <div className="section-copy restor-copy absolute inset-x-0 bottom-0 z-[3] bg-black/25 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] backdrop-blur-[40px] md:pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]">
             <div className="space-y-3 px-6 md:space-y-4">
               <h2 className="font-display text-[clamp(1.5rem,5svw,1.8125rem)] font-semibold leading-tight text-white">
                 From vision to reality.
@@ -283,7 +283,7 @@ export function PortfolioPage() {
           <div className="contact-content px-6 text-center text-white">
             <div className="contact-media absolute inset-0 overflow-hidden">
               <MediaVideo
-                src="/videos/contact-loop.mp4?v=2"
+                src="/videos/contact.mp4?v=3754"
                 poster="/images/contact.jpg"
                 fill
                 priority
@@ -331,21 +331,31 @@ export function PortfolioPage() {
             </div>
           </div>
 
-          <footer className="contact-footer bg-cream">
-            <div className="contact-footer-brand">
-              <span className="font-logo text-[26px] font-semibold leading-none tracking-[0.02em] text-[#2e1e1b]">
+          <footer className="contact-footer bg-[#161311]">
+            <button
+              type="button"
+              onClick={() => scrollToSection("#home")}
+              aria-label="Go to home"
+              className="contact-footer-brand cursor-pointer border-0 bg-transparent p-0 text-left transition-opacity hover:opacity-80"
+            >
+              <span className="font-logo text-[26px] font-semibold leading-none tracking-[0.02em] text-white">
                 niveen
               </span>
-            </div>
+            </button>
 
-            <p className="contact-footer-copy font-body text-[11px] leading-[1.45] text-text-body">
+            <p className="contact-footer-copy font-body text-[11px] leading-[1.45] text-white/70">
               © 2026 Dr. Niveen Salayi
               <br />
               All rights reserved
             </p>
 
-            <div className="contact-footer-credit">
-              <p className="font-body text-[11px] leading-none text-text-body">
+            <a
+              href="https://nordlyssolutions.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-footer-credit transition-opacity hover:opacity-80"
+            >
+              <p className="font-body text-[11px] leading-none text-white/70">
                 Developed by
               </p>
               <div className="flex items-center justify-end gap-1.5">
@@ -356,11 +366,11 @@ export function PortfolioPage() {
                   height={21}
                   className="size-5 shrink-0"
                 />
-                <span className="font-body text-[13px] leading-none text-text-dark">
+                <span className="font-body text-[13px] leading-none text-white">
                   Nordlys
                 </span>
               </div>
-            </div>
+            </a>
           </footer>
         </div>
       </section>
