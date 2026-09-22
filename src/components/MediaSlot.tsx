@@ -121,8 +121,8 @@ export function MediaVideo({
   const directionRef = useRef<"forward" | "reverse">("forward");
   const pingPongActiveRef = useRef(false);
   const useDualClip = pingPong && !!reverseSrc;
-  const [showSkeleton, setShowSkeleton] = useState(true);
   const [activeClip, setActiveClip] = useState<"forward" | "reverse">("forward");
+  const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
     setShowSkeleton(true);
@@ -138,43 +138,87 @@ export function MediaVideo({
       directionRef.current = "forward";
       setupVideo(forward, { loop: false });
       setupVideo(reverse, { loop: false });
+      forward.preload = "auto";
+      reverse.preload = "auto";
 
       const hideSkeleton = () => setShowSkeleton(false);
 
-      const playForward = () => {
-        directionRef.current = "forward";
-        setActiveClip("forward");
-        reverse.pause();
-        forward.currentTime = 0;
-        void forward.play().catch(() => {});
+      let preRollTarget: "forward" | "reverse" | null = null;
+
+      const showClip = (next: "forward" | "reverse") => {
+        directionRef.current = next;
+        setActiveClip(next);
       };
 
-      const playReverse = () => {
-        directionRef.current = "reverse";
-        setActiveClip("reverse");
-        forward.pause();
-        reverse.currentTime = 0;
-        void reverse.play().catch(() => {});
+      const seekToStart = (clip: HTMLVideoElement) => {
+        if (clip.currentTime <= 0.01) return;
+        if (typeof clip.fastSeek === "function") {
+          clip.fastSeek(0);
+          return;
+        }
+        clip.currentTime = 0;
+      };
+
+      const beginPreRoll = (next: "forward" | "reverse") => {
+        if (preRollTarget === next || directionRef.current === next) return;
+
+        const nextClip = next === "forward" ? forward : reverse;
+        preRollTarget = next;
+        seekToStart(nextClip);
+        void nextClip.play().catch(() => {});
+      };
+
+      const handoffToClip = (next: "forward" | "reverse") => {
+        const outgoing = next === "forward" ? reverse : forward;
+        const incoming = next === "forward" ? forward : reverse;
+
+        preRollTarget = null;
+        showClip(next);
+
+        if (incoming.paused) {
+          seekToStart(incoming);
+          void incoming.play().catch(() => {});
+        }
+
+        outgoing.pause();
+        seekToStart(outgoing);
       };
 
       const resumePlayback = () => {
-        if (directionRef.current === "reverse") {
-          if (reverse.paused) void reverse.play().catch(() => {});
-          return;
+        const active = directionRef.current === "reverse" ? reverse : forward;
+        if (active.paused) {
+          void active.play().catch(() => {});
         }
-
-        if (forward.paused) void forward.play().catch(() => {});
       };
 
-      const handleForwardEnded = () => playReverse();
-      const handleReverseEnded = () => playForward();
+      const handleForwardEnded = () => handoffToClip("reverse");
+      const handleReverseEnded = () => handoffToClip("forward");
+
+      const handleForwardTimeUpdate = () => {
+        if (directionRef.current !== "forward") return;
+        const remaining = forward.duration - forward.currentTime;
+        if (Number.isFinite(remaining) && remaining <= 0.15) {
+          beginPreRoll("reverse");
+        }
+      };
+
+      const handleReverseTimeUpdate = () => {
+        if (directionRef.current !== "reverse") return;
+        const remaining = reverse.duration - reverse.currentTime;
+        if (Number.isFinite(remaining) && remaining <= 0.15) {
+          beginPreRoll("forward");
+        }
+      };
 
       forward.addEventListener("loadeddata", hideSkeleton);
       forward.addEventListener("playing", hideSkeleton);
       forward.addEventListener("ended", handleForwardEnded);
+      forward.addEventListener("timeupdate", handleForwardTimeUpdate);
       reverse.addEventListener("ended", handleReverseEnded);
+      reverse.addEventListener("timeupdate", handleReverseTimeUpdate);
 
-      playForward();
+      reverse.load();
+      handoffToClip("forward");
 
       const observerTarget = forward.closest("section") ?? forward;
       const observer = new IntersectionObserver(
@@ -201,7 +245,9 @@ export function MediaVideo({
         forward.removeEventListener("loadeddata", hideSkeleton);
         forward.removeEventListener("playing", hideSkeleton);
         forward.removeEventListener("ended", handleForwardEnded);
+        forward.removeEventListener("timeupdate", handleForwardTimeUpdate);
         reverse.removeEventListener("ended", handleReverseEnded);
+        reverse.removeEventListener("timeupdate", handleReverseTimeUpdate);
         observer.disconnect();
         document.removeEventListener("touchstart", unlock);
         document.removeEventListener("click", unlock);
@@ -333,13 +379,22 @@ export function MediaVideo({
     autoPlay: true,
     muted: true,
     playsInline: true,
-    preload: priority ? "auto" : "metadata",
+    preload: useDualClip || priority ? "auto" : "metadata",
     poster,
     width: 720,
     height: 1280,
   } as const;
 
   if (useDualClip) {
+    const dualClipVideoProps = {
+      autoPlay: true,
+      muted: true,
+      playsInline: true,
+      preload: "auto" as const,
+      width: 720,
+      height: 1280,
+    };
+
     return (
       <div className={wrapperClass}>
         <MediaSkeleton visible={showSkeleton} />
@@ -347,19 +402,15 @@ export function MediaVideo({
           ref={forwardRef}
           src={src}
           loop={false}
-          {...sharedVideoProps}
-          className={`${videoClass} ${className} ${
-            activeClip === "forward" ? "z-[1] opacity-100" : "z-0 opacity-0"
-          }`}
+          {...dualClipVideoProps}
+          className={`${videoClass} ${className} ${activeClip === "forward" ? "z-[1] opacity-100" : "z-0 opacity-0"}`}
         />
         <video
           ref={reverseRef}
           src={reverseSrc}
           loop={false}
-          {...sharedVideoProps}
-          className={`${videoClass} ${className} ${
-            activeClip === "reverse" ? "z-[1] opacity-100" : "z-0 opacity-0"
-          }`}
+          {...dualClipVideoProps}
+          className={`${videoClass} ${className} ${activeClip === "reverse" ? "z-[1] opacity-100" : "z-0 opacity-0"}`}
         />
       </div>
     );

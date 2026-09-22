@@ -283,11 +283,9 @@ export function PortfolioPage() {
           <div className="contact-content px-6 text-center text-white">
             <div className="contact-media absolute inset-0 overflow-hidden">
               <MediaVideo
-                src="/videos/booking.mp4"
-                reverseSrc="/videos/booking-reverse.mp4"
-                poster="/images/booking.jpg"
+                src="/videos/contact-loop.mp4?v=2"
+                poster="/images/contact.jpg"
                 fill
-                pingPong
                 priority
                 className="object-[50%_28%]"
               />
