@@ -5,7 +5,8 @@ export const siteConfig = {
     "Dr Niveen Salayi | Cosmetic & Restorative Dentist in Erbil, Iraq",
   description:
     "Dr Niveen Salayi is a cosmetic and restorative dentist in Erbil, Iraq. Co-founder of Restor Dental Clinic with 8 years of experience in smile design, bleaching, and restorative dentistry.",
-  basePath: "/drniveen",
+  /** Public URL path on nordlyssolutions.com — SEO/canonical only, not Next.js routing. */
+  canonicalPath: "/drniveen",
   origin: "https://nordlyssolutions.com",
   locale: "en_US",
   keywords: [
@@ -43,5 +44,5 @@ export const siteConfig = {
 
 export function getSiteUrl(path = "") {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return `${siteConfig.origin}${siteConfig.basePath}${normalizedPath === "/" ? "" : normalizedPath}`;
+  return `${siteConfig.origin}${siteConfig.canonicalPath}${normalizedPath === "/" ? "" : normalizedPath}`;
 }

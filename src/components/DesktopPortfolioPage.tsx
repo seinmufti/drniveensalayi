@@ -86,11 +86,13 @@ function CertificateCard({
   src,
   alt,
   label,
+  aspectClassName = "aspect-[200/147]",
   onOpen,
 }: {
   src: string;
   alt: string;
   label: string;
+  aspectClassName?: string;
   onOpen: (image: CertificateLightboxImage) => void;
 }) {
   return (
@@ -112,7 +114,7 @@ function CertificateCard({
         });
       }}
     >
-      <MediaSlot className="aspect-[200/147] w-full shadow-lg">
+      <MediaSlot className={`${aspectClassName} w-full shadow-lg`}>
         <MediaImage
           src={src}
           alt={alt}
@@ -271,9 +273,10 @@ export function DesktopPortfolioPage() {
               </MediaSlot>
               <div className="desktop-certs">
                 <CertificateCard
-                  src="/images/diploma.png"
-                  alt="Diploma certificate"
-                  label="View diploma certificate"
+                  src="/images/diploma.jpg"
+                  alt="BAIRD Professional Diploma in Clinical Cosmetic and Restorative Dentistry"
+                  label="View BAIRD cosmetic dentistry diploma"
+                  aspectClassName="aspect-[512/341]"
                   onOpen={setCertificateLightbox}
                 />
                 <CertificateCard

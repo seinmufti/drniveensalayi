@@ -118,12 +118,12 @@ export function PortfolioPage() {
           <button
             type="button"
             className="absolute left-0 top-[19%] z-[3] w-[47.5%] max-w-[209px] cursor-pointer border-0 bg-transparent p-0 text-left transition-transform hover:scale-[1.02] active:scale-[0.98]"
-            aria-label="View diploma certificate"
+            aria-label="View BAIRD cosmetic dentistry diploma"
             onClick={(event) => {
               const rect = event.currentTarget.getBoundingClientRect();
               setCertificateLightbox({
-                src: "/images/diploma.png",
-                alt: "Diploma certificate",
+                src: "/images/diploma.jpg",
+                alt: "BAIRD Professional Diploma in Clinical Cosmetic and Restorative Dentistry",
                 originRect: {
                   top: rect.top,
                   left: rect.left,
@@ -133,10 +133,10 @@ export function PortfolioPage() {
               });
             }}
           >
-            <MediaSlot className="aspect-[209/147] w-full shadow-lg">
+            <MediaSlot className="aspect-[512/341] w-full shadow-lg">
               <MediaImage
-                src="/images/diploma.png"
-                alt="Diploma certificate"
+                src="/images/diploma.jpg"
+                alt="BAIRD Professional Diploma in Clinical Cosmetic and Restorative Dentistry"
                 sizes="209px"
               />
             </MediaSlot>
