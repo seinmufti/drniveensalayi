@@ -5,7 +5,9 @@ import {
   Instrument_Sans,
 } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
+import { JsonLd } from "@/components/JsonLd";
 import { ViewportInitScript } from "@/components/ViewportInitScript";
+import { getSiteUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
 import "./desktop.css";
 
@@ -34,9 +36,54 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dr. Niveen Salayi",
-  description:
-    "Cosmetics and Restorative Dentist — Dentistry, with a touch of personality.",
+  metadataBase: new URL(getSiteUrl()),
+  applicationName: siteConfig.name,
+  title: {
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  keywords: [...siteConfig.keywords],
+  authors: [{ name: siteConfig.name, url: getSiteUrl() }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
+  category: "health",
+  alternates: {
+    canonical: getSiteUrl(),
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale,
+    url: getSiteUrl(),
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} — cosmetic and restorative dentist in Erbil`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+  },
 };
 
 export const viewport = {
@@ -53,6 +100,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${cormorant.variable} ${instrument.variable} ${dancing.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
+        <JsonLd />
         <ViewportInitScript />
       </head>
       <body className="min-h-full" suppressHydrationWarning>

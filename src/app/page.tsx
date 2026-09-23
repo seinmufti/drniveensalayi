@@ -1,5 +1,5 @@
-import { HomeClient } from "@/components/HomeClient";
+import { ResponsiveSite } from "@/components/ResponsiveSite";
 
 export default function Home() {
-  return <HomeClient />;
+  return <ResponsiveSite />;
 }
