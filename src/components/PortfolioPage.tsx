@@ -143,7 +143,7 @@ export function PortfolioPage() {
           </button>
           <button
             type="button"
-            className="absolute right-0 top-[19%] z-[3] w-[45.5%] max-w-[200px] cursor-pointer border-0 bg-transparent p-0 text-left transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            className="absolute right-0 top-[19%] z-[3] w-[47.5%] max-w-[209px] cursor-pointer border-0 bg-transparent p-0 text-left transition-transform hover:scale-[1.02] active:scale-[0.98]"
             aria-label="View BDS certificate"
             onClick={(event) => {
               const rect = event.currentTarget.getBoundingClientRect();
@@ -159,11 +159,11 @@ export function PortfolioPage() {
               });
             }}
           >
-            <MediaSlot className="aspect-[200/147] w-full shadow-lg">
+            <MediaSlot className="aspect-[512/341] w-full shadow-lg">
               <MediaImage
                 src="/images/bds-certificate.png"
                 alt="BDS certificate"
-                sizes="200px"
+                sizes="209px"
               />
             </MediaSlot>
           </button>
@@ -319,6 +319,16 @@ export function PortfolioPage() {
               </p>
               <p>
                 <a
+                  href="https://www.facebook.com/p/DrNiveen-salayi-61575858906904/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline decoration-white/30 underline-offset-4"
+                >
+                  Facebook: Dr. Niveen Salayi
+                </a>
+              </p>
+              <p>
+                <a
                   href="https://instagram.com/restor.dental"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -365,6 +375,7 @@ export function PortfolioPage() {
                   width={20}
                   height={21}
                   className="h-5 w-auto shrink-0"
+                  style={{ width: "auto" }}
                 />
                 <span className="font-body text-[13px] leading-none text-white">
                   Nordlys

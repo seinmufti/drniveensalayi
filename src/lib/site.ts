@@ -37,6 +37,7 @@ export const siteConfig = {
   },
   social: {
     instagram: "https://instagram.com/dr.niveen_salayi",
+    facebook: "https://www.facebook.com/p/DrNiveen-salayi-61575858906904/",
     whatsapp: "https://wa.me/9647510514001",
   },
   ogImage: "/images/about-left.jpg",

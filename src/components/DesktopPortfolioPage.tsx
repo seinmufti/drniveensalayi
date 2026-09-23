@@ -86,7 +86,7 @@ function CertificateCard({
   src,
   alt,
   label,
-  aspectClassName = "aspect-[200/147]",
+  aspectClassName = "aspect-[512/341]",
   onOpen,
 }: {
   src: string;
@@ -119,7 +119,6 @@ function CertificateCard({
           src={src}
           alt={alt}
           sizes="220px"
-          className="desktop-cert-photo"
         />
       </MediaSlot>
     </button>
@@ -211,37 +210,35 @@ export function DesktopPortfolioPage() {
         <section
           id="about"
           data-desktop-section
-          className="desktop-section desktop-section-cream"
+          className="desktop-section desktop-section-cream desktop-about"
         >
-          <div className="desktop-section-inner">
+          <div className="desktop-about-copy">
             <DesktopLabel>01 / Meet Niveen</DesktopLabel>
-            <div className="desktop-split">
-              <div className="desktop-copy">
-                <h2>Who says dentists are scary?</h2>
-                <p>
-                  When I&apos;m not perfecting smiles, you&apos;ll find me exploring new
-                  cities, hunting for the best coffee spots, and proving that your
-                  dentist can actually be someone you look forward to seeing and
-                  connect with.
-                </p>
-              </div>
-              <div className="desktop-about-media">
-                <MediaSlot className="desktop-media-fill">
-                  <MediaImage
-                    src="/images/about-left.jpg"
-                    alt="Dr. Niveen portrait"
-                    className="object-[22%_45%]"
-                    sizes="36vw"
-                  />
-                </MediaSlot>
-                <MediaSlot className="desktop-media-fill">
-                  <MediaVideo
-                    src="/videos/about-right.mp4"
-                    poster="/images/about-right.jpg"
-                  />
-                </MediaSlot>
-              </div>
+            <div className="desktop-copy">
+              <h2>Who says dentists are scary?</h2>
+              <p>
+                When I&apos;m not perfecting smiles, you&apos;ll find me exploring new
+                cities, hunting for the best coffee spots, and proving that your
+                dentist can actually be someone you look forward to seeing and
+                connect with.
+              </p>
             </div>
+          </div>
+          <div className="desktop-about-media">
+            <MediaSlot className="desktop-media-fill">
+              <MediaImage
+                src="/images/about-left.jpg"
+                alt="Dr. Niveen portrait"
+                className="object-[22%_45%]"
+                sizes="36vw"
+              />
+            </MediaSlot>
+            <MediaSlot className="desktop-media-fill">
+              <MediaVideo
+                src="/videos/about-right.mp4"
+                poster="/images/about-right.jpg"
+              />
+            </MediaSlot>
           </div>
         </section>
 
@@ -276,7 +273,6 @@ export function DesktopPortfolioPage() {
                   src="/images/diploma.jpg"
                   alt="BAIRD Professional Diploma in Clinical Cosmetic and Restorative Dentistry"
                   label="View BAIRD cosmetic dentistry diploma"
-                  aspectClassName="aspect-[512/341]"
                   onOpen={setCertificateLightbox}
                 />
                 <CertificateCard
@@ -464,6 +460,19 @@ export function DesktopPortfolioPage() {
                   <span className="desktop-contact-link-label">dr.niveen_salayi</span>
                 </a>
                 <a
+                  href="https://www.facebook.com/p/DrNiveen-salayi-61575858906904/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="desktop-contact-link-row"
+                >
+                  <span className="desktop-contact-link-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                  </span>
+                  <span className="desktop-contact-link-label">Dr. Niveen Salayi</span>
+                </a>
+                <a
                   href="https://instagram.com/restor.dental"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -523,6 +532,7 @@ export function DesktopPortfolioPage() {
                   width={20}
                   height={21}
                   className="h-5 w-auto shrink-0"
+                  style={{ width: "auto" }}
                 />
                 Nordlys
               </span>

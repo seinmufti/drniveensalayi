@@ -5,8 +5,9 @@ import {
   Instrument_Sans,
 } from "next/font/google";
 import { Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { JsonLd } from "@/components/JsonLd";
-import { ViewportInitScript } from "@/components/ViewportInitScript";
+import { VIEWPORT_INIT_SCRIPT } from "@/components/ViewportInitScript";
 import { getSiteUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
 import "./desktop.css";
@@ -101,10 +102,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <JsonLd />
-        <ViewportInitScript />
+        <Script id="viewport-init" strategy="beforeInteractive">
+          {VIEWPORT_INIT_SCRIPT}
+        </Script>
       </head>
       <body className="min-h-full" suppressHydrationWarning>
-        <ViewportInitScript />
         {children}
       </body>
     </html>

@@ -36,7 +36,11 @@ export function JsonLd() {
         description: siteConfig.description,
         url: siteUrl,
         image: imageUrl,
-        sameAs: [siteConfig.social.instagram, siteConfig.clinic.instagram],
+        sameAs: [
+          siteConfig.social.instagram,
+          siteConfig.social.facebook,
+          siteConfig.clinic.instagram,
+        ],
         worksFor: { "@id": `${siteUrl}/#clinic` },
         knowsAbout: [
           "Cosmetic dentistry",
@@ -66,6 +70,7 @@ export function JsonLd() {
   return (
     <script
       type="application/ld+json"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );

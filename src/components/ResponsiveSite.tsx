@@ -8,18 +8,6 @@ import { PortfolioPage } from "./PortfolioPage";
 
 const DESKTOP_QUERY = "(min-width: 768px)";
 
-function readIsDesktop() {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  const fromDom = document.documentElement.dataset.viewport;
-  if (fromDom === "desktop") return true;
-  if (fromDom === "mobile") return false;
-
-  return window.matchMedia(DESKTOP_QUERY).matches;
-}
-
 function syncViewportMarker(isDesktop: boolean) {
   const viewport = isDesktop ? "desktop" : "mobile";
   document.documentElement.dataset.viewport = viewport;
@@ -27,7 +15,8 @@ function syncViewportMarker(isDesktop: boolean) {
 }
 
 export function ResponsiveSite() {
-  const [isDesktop, setIsDesktop] = useState(readIsDesktop);
+  // Always start false so SSR and the first client render match; sync in useLayoutEffect.
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useLayoutEffect(() => {
     const mediaQuery = window.matchMedia(DESKTOP_QUERY);
