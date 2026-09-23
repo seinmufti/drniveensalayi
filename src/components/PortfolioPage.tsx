@@ -364,7 +364,7 @@ export function PortfolioPage() {
                   alt="Nordlys"
                   width={20}
                   height={21}
-                  className="size-5 shrink-0"
+                  className="h-5 w-auto shrink-0"
                 />
                 <span className="font-body text-[13px] leading-none text-white">
                   Nordlys

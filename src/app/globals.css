@@ -54,6 +54,14 @@ body {
   font-family: var(--font-instrument), system-ui, sans-serif;
 }
 
+html[data-viewport="mobile"] body {
+  background: var(--color-cream);
+}
+
+html[data-viewport="desktop"] body {
+  background: #141110;
+}
+
 .phone-scroll {
   scrollbar-width: thin;
   scrollbar-color: rgba(194, 125, 102, 0.35) transparent;
@@ -112,8 +120,9 @@ body {
   flex-shrink: 0;
 }
 
-#home,
-#home * {
+/* Mobile only: hero sits under fixed chrome, so clicks pass through to the header. */
+body[data-viewport="mobile"] #home,
+body[data-viewport="mobile"] #home * {
   pointer-events: none;
 }
 

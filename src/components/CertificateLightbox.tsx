@@ -226,7 +226,8 @@ export function CertificateLightbox({
             src={displayImage.src}
             alt={displayImage.alt}
             fill
-            sizes="(max-width: 440px) 92vw, 420px"
+            sizes="(max-width: 768px) 92vw, 1120px"
+            quality={95}
             className="object-contain"
             priority
           />
