@@ -36,6 +36,7 @@ export function JsonLd() {
         description: siteConfig.description,
         url: siteUrl,
         image: imageUrl,
+        email: siteConfig.contact.email,
         sameAs: [
           siteConfig.social.instagram,
           siteConfig.social.facebook,

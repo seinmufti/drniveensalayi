@@ -32,13 +32,17 @@ export const siteConfig = {
     addressLocality: "Erbil",
     addressRegion: "Bakhtyari",
     addressCountry: "IQ",
-    telephone: "+9647510514001",
+    telephone: "+9647509480041",
     instagram: "https://instagram.com/restor.dental",
+  },
+  contact: {
+    phoneDisplay: "+964 750 948 0041",
+    email: "niveensalayi@gmail.com",
   },
   social: {
     instagram: "https://instagram.com/dr.niveen_salayi",
     facebook: "https://www.facebook.com/p/DrNiveen-salayi-61575858906904/",
-    whatsapp: "https://wa.me/9647510514001",
+    whatsapp: "https://wa.me/9647509480041",
   },
   ogImage: "/images/about-left.jpg",
 } as const;

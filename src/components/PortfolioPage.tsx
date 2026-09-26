@@ -10,6 +10,7 @@ import { ClinicMap } from "./ClinicMap";
 import { MediaImage, MediaSlot, MediaVideo } from "./MediaSlot";
 import { SiteChrome, scrollToSection } from "./MobileNav";
 import { SectionLabel } from "./SectionLabel";
+import { siteConfig } from "@/lib/site";
 
 export function PortfolioPage() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -299,12 +300,20 @@ export function PortfolioPage() {
             <div className="mx-auto mt-6 max-w-[360px] space-y-2.5 font-body text-[15px] leading-[1.7] text-white/95">
               <p>
                 <a
-                  href="https://wa.me/9647510514001"
+                  href={siteConfig.social.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline decoration-white/30 underline-offset-4"
                 >
-                  WhatsApp: +964 751 051 4001
+                  WhatsApp: {siteConfig.contact.phoneDisplay}
+                </a>
+              </p>
+              <p>
+                <a
+                  href={`mailto:${siteConfig.contact.email}`}
+                  className="underline decoration-white/30 underline-offset-4"
+                >
+                  Email: {siteConfig.contact.email}
                 </a>
               </p>
               <p>
